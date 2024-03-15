@@ -59,42 +59,42 @@ class Venue(models.Model):
     owner = models.TextField()
     point_of_contact = models.ManyToManyField(PointOfContact)
 
+class EventType(models.Model):
+    name = models.TextField()
+    description = models.TextField()
 
 class Event(models.Model):
-    """
-    ['Unnamed: 0', 'eventCapacity', 'type', 'creator', 'requireTickets',
-       'ticketPurchaseURL', 'startTimestamp', 'coordinates',
-       'eventArchive', 'name', 'partyPass', 'kickedMembers',
-       'endTimestamp', 'matchNotify', 'secretPairing',
-       'passwordProtection', 'entryBucket', 'description', 'hideEvent',
-       'groupID', 'speedMode', 'cohosts', 'bannerImageURL', 'filters',
-       'eventVisibility', 'partyColor', 'matchingSystem', 'members',
-       'joinQueue', 'venue', 'exitBucket', 'eventHasStarted',
-       'bannedMembers']
-    """
-    event_name = models.DateTimeField()
-    event_description = models.TextField()
-    event_type = models.TextField()
-    created_at = models.DateTimeField()
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
     require_tickets = models.BooleanField()
-    delay_notifications = models.BooleanField()
     password_protected = models.BooleanField()
-    event_visibility = models.TextField()
-    event_start_date = models.DateField()
-    event_end_date = models.DateField(null=True)
-    is_multi_day = models.BooleanField()
-    event_start_time = models.TimeField()
-    event_end_time = models.TimeField()
-    host = models.ManyToManyField(User)
-    creator = models.ManyToManyField(User)
-    venue = models.ManyToManyField(User)
+    visibility = models.CharField(max_length=200, null=True)
     cost = models.FloatField()
+    type = models.ForeignKey(EventType, null=True, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, null=True, on_delete=models.CASCADE)
+
+class EventDate(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True)
+    is_multi_day = models.BooleanField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+class EventUser(models.Model):
+    ROLES = (
+        ('H', 'Host'),
+        ('C', 'Creator'),
+    )
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=1, choices=ROLES)
 
 class EventCheckIn(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     check_in_time = models.DateTimeField()
-    guest_type = models.TextField()
+    guest_type = models.CharField(max_length=200)
     is_host = models.BooleanField()
 
 class Transaction(models.Model):
