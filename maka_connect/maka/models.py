@@ -87,13 +87,13 @@ class EventUser(models.Model):
         ('C', 'Creator'),
     )
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     role = models.CharField(max_length=1, choices=ROLES)
 
 class EventCheckIn(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    check_in_time = models.DateTimeField()
+    user = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
+    check_in_time = models.DateTimeField(auto_now_add=True)
     guest_type = models.CharField(max_length=200)
     is_host = models.BooleanField()
 

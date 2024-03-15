@@ -7,6 +7,7 @@ from .serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import status
+from django.core.exceptions import ObjectDoesNotExist
 
 
 ###
@@ -23,9 +24,20 @@ class EventList(APIView):
         return Response(event_serializer.data)
     
     def post(self, request, format=None):
-        event_serializer = EventSerializer(request.data)
-        if event_serializer.is_valid():
-            event_serializer.save()
+        print(request.data)
+        data = request.data
+        event_serializer = EventSerializer(data=data)
+        try:
+            event_type = EventType.objects.get(name=data['event_type']['name'])
+        except ObjectDoesNotExist:
+            EventType.objects.create(**data['event_type'])
+        else:
+            data['type'] = event_type.id
+
+        if (event_serializer.is_valid()):
+            n = event_serializer.save()
+            EventDate.objects.create(event_id=n.id, **data['event_date'])
+            EventUser.objects.create(event_id=n.id, **data['event_user'])
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -64,6 +76,13 @@ class EventDetail(APIView):
 
 @api_view(['GET'])
 def getUser(request, uid):
+    users = User.objects.get(pk=uid)
+    serializer = UserSerializer(users, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getProfile(request, uid):
     users = User.objects.get(pk=uid)
     serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
