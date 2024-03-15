@@ -61,17 +61,33 @@ class Venue(models.Model):
 
 
 class Event(models.Model):
+    """
+    ['Unnamed: 0', 'eventCapacity', 'type', 'creator', 'requireTickets',
+       'ticketPurchaseURL', 'startTimestamp', 'coordinates',
+       'eventArchive', 'name', 'partyPass', 'kickedMembers',
+       'endTimestamp', 'matchNotify', 'secretPairing',
+       'passwordProtection', 'entryBucket', 'description', 'hideEvent',
+       'groupID', 'speedMode', 'cohosts', 'bannerImageURL', 'filters',
+       'eventVisibility', 'partyColor', 'matchingSystem', 'members',
+       'joinQueue', 'venue', 'exitBucket', 'eventHasStarted',
+       'bannedMembers']
+    """
     event_name = models.DateTimeField()
     event_description = models.TextField()
+    event_type = models.TextField()
     created_at = models.DateTimeField()
-    is_ticketed = models.BooleanField()
+    require_tickets = models.BooleanField()
+    delay_notifications = models.BooleanField()
+    password_protected = models.BooleanField()
+    event_visibility = models.TextField()
     event_start_date = models.DateField()
+    event_end_date = models.DateField(null=True)
     is_multi_day = models.BooleanField()
-    event_end_date = models.DateField()
     event_start_time = models.TimeField()
     event_end_time = models.TimeField()
     host = models.ManyToManyField(User)
-    venue = models.ManyToManyField(Venue)
+    creator = models.ManyToManyField(User)
+    venue = models.ManyToManyField(User)
     cost = models.FloatField()
 
 class EventCheckIn(models.Model):

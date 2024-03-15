@@ -4,7 +4,63 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from maka.models import *
 from .serializers import *
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework import status
 
+
+###
+#    CLASS BASED VIEWS
+###
+
+class EventList(APIView):
+    """
+    List all Events, or create a new Event
+    """
+    def get(self, request, format=None):
+        events = Event.objects.all()
+        event_serializer = EventSerializer(events, many=True)
+        return Response(event_serializer.data)
+    
+    def post(self, request, format=None):
+        event_serializer = EventSerializer(request.data)
+        if event_serializer.is_valid():
+            event_serializer.save()
+            return Response(event_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class EventDetail(APIView):
+    """
+    Requests pertaining to a specific Event that exists on database
+    """    
+    def get_event(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except:
+            return Http404
+    
+    def get(self, request, pk, format=None):
+        event = self.get_event(pk)
+        event_serializer = EventSerializer(event)
+        return Response(event_serializer.data)
+    
+    def put(self, request, pk, format=None):
+        event = self.get_event(pk)
+        event_serializer = EventSerializer(event, data=request.data)
+        if event_serializer.is_valid():
+            event_serializer.save()
+            return Response(event_serializer.data)
+        return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        event = self.get_event(pk)
+        event.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+###
+#    FUNCTION BASED VIEWS
+###
 
 @api_view(['GET'])
 def getUser(request, uid):
@@ -21,6 +77,7 @@ def getFullProfile(request, uid):
                      "profile": ProfileSerializer(profile, many=False).data, 
                      "conversation_starters": ConversationStarterSerializer(conversation_topics, many=True).data})
 
+
 @api_view(['POST'])
 def checkInEvent(request, uid, event_id):
     event = Event.objects.get(pk=event_id)
@@ -32,4 +89,7 @@ def checkInEvent(request, uid, event_id):
         else:
             return Response({"Status": "Ticket Verified"})
         
-        
+
+@api_view(['POST'])
+def register_ticket(request, uid, event_id):
+    return NotImplemented()
