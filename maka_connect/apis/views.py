@@ -111,24 +111,22 @@ def checkInEvent(request, uid, event_id):
 @api_view(['POST'])
 def likeUser(request):
     user_interaction_serializer = UserInteractionSerializer(data=request.data)
-    """
-    11:23 Error: Value Error cannot assign Znhat... "UserInteraction.target" must be a User instance
-    """
-    if (user_interaction_serializer.is_valid()):
+    if user_interaction_serializer.is_valid():
         target_user = User.objects.get(uid=request.data['target'])
         actor_user = User.objects.get(uid=request.data['actor'])
         try:
-            event_object = Event.objects.get(id = request.data['event'])
-        except:
+            event_object = Event.objects.get(id=request.data['event'])
+        except Event.DoesNotExist:
             event_object = None
-        
-        interaction = UserInteraction.objects.create({
-            "target": target_user,
-            "actor": actor_user,
-            "event": event_object,
-            "interaction_type":request.data['interaction_type'],
-        })
-        return Response(interaction.data)
+
+        interaction = UserInteraction.objects.create(
+            target=target_user,
+            actor=actor_user,
+            event=event_object,
+            interaction_type=request.data['interaction_type'],
+        )
+        interaction_serializer = UserInteractionSerializer(interaction)
+        return Response(interaction_serializer.data)
     return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
