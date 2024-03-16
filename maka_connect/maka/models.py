@@ -137,8 +137,8 @@ class UserInteraction(models.Model):
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target")
     actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actor")
     interaction_type = models.TextField()
-    interaction_time = models.DateTimeField()
-    event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
+    interaction_time = models.DateTimeField(auto_now_add=True)
+    event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
 
 
 class EventFeedback(models.Model):

@@ -110,8 +110,8 @@ def checkInEvent(request, uid, event_id):
 
 @api_view(['POST'])
 def likeUser(request):
-    like = UserInteractionSerializer(data=request.data)
-    return Response(like)
+    like = UserInteractionSerializer(data=request)
+    return Response(like.data)
 
 
 @api_view(['POST'])
