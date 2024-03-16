@@ -42,6 +42,13 @@ class ConversationStarters(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField()
 
+class UserActivityTracking(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    login_history = models.TextField()
+    events_viewed = models.TextField()
+    tickets_purchased = models.TextField()
+    likes_given = models.TextField()
+
 
 """
     Contact information for key persons
@@ -72,6 +79,10 @@ class Venue(models.Model):
     owner = models.TextField()
     point_of_contact = models.ManyToManyField(KeyPerson)
 
+
+"""
+    Event related classes
+"""
 class EventType(models.Model):
     name = models.TextField()
     description = models.TextField()
@@ -111,6 +122,11 @@ class EventCheckIn(models.Model):
     guest_type = models.CharField(max_length=200)
     is_host = models.BooleanField()
 
+
+"""
+    User-User interactions
+    User-Event Interactions
+"""
 class Transaction(models.Model):
     transaction_time = models.TimeField()
     transaction_date = models.DateField()
@@ -124,8 +140,32 @@ class UserInteraction(models.Model):
     interaction_time = models.DateTimeField()
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
 
+
+class EventFeedback(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user_feedback = models.TextField()
+    user_ratings = models.TextField()
+    comments = models.TextField()
+
+
+"""
+    Event Management functions
+"""
+
 class Ticket(models.Model):
     #For ticket endpoints i suppose there can be multiple methods of acquiring the users information to pass into this field
     # Get user by phone etc etc.
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
+
+class EventPromotion(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    marketing_materials = models.TextField()
+    social_media_links = models.TextField()
+    promotional_offers = models.TextField()
+
+class EventCollaboration(models.Model):
+    collaborating_orgs = models.ManyToManyField(Organization)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    collaboration_status = models.TextField()
+
