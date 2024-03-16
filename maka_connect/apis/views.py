@@ -127,7 +127,6 @@ def likeUser(request):
             "actor": actor_user,
             "event": event_object,
             "interaction_type":request.data['interaction_type'],
-            "interaction_time":request.data['interaction_time']
         })
         return Response(interaction.data)
     return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
