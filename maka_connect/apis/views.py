@@ -110,9 +110,9 @@ def checkInEvent(request, uid, event_id):
 
 @api_view(['POST'])
 def likeUser(request):
-    user_interaction_serializer = UserInteractionSerializer(data=request)
+    user_interaction_serializer = UserInteractionSerializer(data=request.data)
     if (user_interaction_serializer.is_valid()):
-        interaction = UserInteraction.objects.create(**request.data)
+        interaction = UserInteraction.objects.create(user_interaction_serializer)
         return Response(interaction.data)
     return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
