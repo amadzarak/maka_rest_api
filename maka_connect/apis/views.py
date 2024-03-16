@@ -115,8 +115,8 @@ def likeUser(request):
     11:23 Error: Value Error cannot assign Znhat... "UserInteraction.target" must be a User instance
     """
     if (user_interaction_serializer.is_valid()):
-        target_user = User.objects.get(id=request.data['target'])
-        actor_user = User.objects.get(id=request.data['actor'])
+        target_user = User.objects.get(uid=request.data['target'])
+        actor_user = User.objects.get(uid=request.data['actor'])
         event_object = Event.objects.get(id = request.data['event'])
         interaction = UserInteraction.objects.create({
             "target": target_user,
