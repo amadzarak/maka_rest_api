@@ -117,7 +117,11 @@ def likeUser(request):
     if (user_interaction_serializer.is_valid()):
         target_user = User.objects.get(uid=request.data['target'])
         actor_user = User.objects.get(uid=request.data['actor'])
-        event_object = Event.objects.get(id = request.data['event'])
+        try:
+            event_object = Event.objects.get(id = request.data['event'])
+        except:
+            event_object = None
+        
         interaction = UserInteraction.objects.create({
             "target": target_user,
             "actor": actor_user,
