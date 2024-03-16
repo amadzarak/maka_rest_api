@@ -111,7 +111,9 @@ def checkInEvent(request, uid, event_id):
 @api_view(['POST'])
 def likeUser(request):
     like = UserInteractionSerializer(data=request)
-    return Response(like.data)
+    if (like.is_valid()):
+        interaction = UserInteraction.objects.create(like.data)
+    return Response(interaction)
 
 
 @api_view(['POST'])
