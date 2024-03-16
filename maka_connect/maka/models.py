@@ -78,6 +78,7 @@ class Venue(models.Model):
     venue_name = models.TextField()
     owner = models.TextField()
     point_of_contact = models.ManyToManyField(KeyPerson)
+    coordinates = models.TextField()
 
 
 """
@@ -139,6 +140,12 @@ class UserInteraction(models.Model):
     interaction_type = models.TextField()
     interaction_time = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
+
+class Matches(models.Model):
+    user1_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
+    user2_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user2")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField()
 
 
 class EventFeedback(models.Model):

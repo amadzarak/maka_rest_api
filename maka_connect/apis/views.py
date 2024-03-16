@@ -119,6 +119,14 @@ def likeUser(request):
         except Event.DoesNotExist:
             event_object = None
 
+        
+        try:
+            mutual_like = UserInteraction.objects.get(actor=request.data['target'], target=request.data['actor'])
+        except UserInteraction.DoesNotExist:
+            pass
+        else:
+            print('create a match')
+
         interaction = UserInteraction.objects.create(
             target=target_user,
             actor=actor_user,
@@ -128,6 +136,17 @@ def likeUser(request):
         interaction_serializer = UserInteractionSerializer(interaction)
         return Response(interaction_serializer.data)
     return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def unlikeUser(request):
+    return NotImplemented()
+
+@api_view(['POST'])
+def unmatchUser(request):
+    return NotImplemented()
+
+
 
 @api_view(['POST'])
 def register_ticket(request, uid, event_id):
