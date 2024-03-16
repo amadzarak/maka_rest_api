@@ -13,6 +13,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
 
+class UserInteractionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInteraction
+        fields = '__all__'
 
 class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,6 +1,11 @@
 from django.db import models
 
 # Create your models here.
+
+
+"""
+    User related clases
+"""
 class User(models.Model):
     uid = models.CharField(max_length=100, primary_key=True)
     created_at = models.DateTimeField
@@ -37,6 +42,10 @@ class ConversationStarters(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField()
 
+
+"""
+    Contact information for key persons
+"""
 class Address(models.Model):
     address_line_1 = models.TextField()
     address_line_2 = models.TextField()
@@ -45,7 +54,7 @@ class Address(models.Model):
     zip = models.TextField()
 
 
-class PointOfContact(models.Model):
+class KeyPerson(models.Model):
     first_name = models.TextField()
     middle_name = models.TextField()
     last_name = models.TextField()
@@ -53,17 +62,22 @@ class PointOfContact(models.Model):
     email = models.TextField()
     
 
+class Organization(models.Model):
+    organization_name = models.TextField()
+    key_persons = models.ManyToManyField(KeyPerson)
+
 class Venue(models.Model):
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     venue_name = models.TextField()
     owner = models.TextField()
-    point_of_contact = models.ManyToManyField(PointOfContact)
+    point_of_contact = models.ManyToManyField(KeyPerson)
 
 class EventType(models.Model):
     name = models.TextField()
     description = models.TextField()
 
 class Event(models.Model):
+    name = models.TextField()
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     require_tickets = models.BooleanField()

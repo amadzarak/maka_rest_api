@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 
-
+import dateparser
 ###
 #    CLASS BASED VIEWS
 ###
@@ -107,7 +107,12 @@ def checkInEvent(request, uid, event_id):
             return Response({"Error": "Ticket not Found"})
         else:
             return Response({"Status": "Ticket Verified"})
-        
+
+@api_view(['POST'])
+def likeUser(request):
+    like = UserInteractionSerializer(data=request.data)
+    return Response(like)
+
 
 @api_view(['POST'])
 def register_ticket(request, uid, event_id):
