@@ -18,6 +18,14 @@ class UserInteractionSerializer(serializers.ModelSerializer):
         model = UserInteraction
         fields = '__all__'
 
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Matches
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return Matches.objects.create(**validated_data)
+
 class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventType

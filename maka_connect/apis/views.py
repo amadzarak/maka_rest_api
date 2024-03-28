@@ -121,11 +121,19 @@ def likeUser(request):
 
         
         try:
-            mutual_like = UserInteraction.objects.get(actor=request.data['target'], target=request.data['actor'])
+            mutual_like = UserInteraction.objects.get(actor=request.data['target'], 
+                                                    target=request.data['actor'])
         except UserInteraction.DoesNotExist:
             pass
         else:
             print('create a match')
+            users = [request.data['actor'], request.data['target']]
+            users.sort()
+            # Need to stuff proper serialization and object cration. This is quite difficult.
+            match_object = MatchSerializer({"user1":users[0], "user2":users[1], "active":True})
+            MatchSerializer.create(match_object, validated_data={"active": True, 
+                                                                "user1": User.objects.get(uid=users[0]), 
+                                                                "user2": User.objects.get(uid=users[1])})
 
         interaction = UserInteraction.objects.create(
             target=target_user,
@@ -142,7 +150,7 @@ def likeUser(request):
 def unlikeUser(request):
     return NotImplemented()
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 def unmatchUser(request):
     return NotImplemented()
 
