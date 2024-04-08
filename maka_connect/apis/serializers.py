@@ -80,3 +80,14 @@ class ConversationStarterSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConversationStarters
         fields = ['description']
+
+
+class VenueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Venue
+        fields = '__all__'
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'

@@ -41,6 +41,22 @@ class EventList(APIView):
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class VenueList(APIView):
+    def get(self, request, format=None):
+        venues = Venue.objects.all()
+        venue_serializer = VenueSerializer(venues, many=True)
+        return Response(venue_serializer.data)
+
+    def put(self, request, pk, format=None):
+        venue = self.get_venue(pk)
+        venue_serializer = VenueSerializer(venue, data=request.data)
+
+        if venue_serializer.is_valid():
+            venue_serializer.save()
+            return Response(venue_serializer.data)
+        return Response(venue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class EventDetail(APIView):
     """
     Requests pertaining to a specific Event that exists on database
