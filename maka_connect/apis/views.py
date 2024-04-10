@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 
+import geocoder
 import dateparser
 ###
 #    CLASS BASED VIEWS
@@ -48,13 +49,35 @@ class VenueList(APIView):
         venue_serializer = VenueSerializer(venues, many=True)
         return Response(venue_serializer.data)
 
-    def put(self, request, pk, format=None):
-        venue = self.get_venue(pk)
-        venue_serializer = VenueSerializer(venue, data=request.data)
+    def post(self, request, format=None):
+        print(request.data)
+        data = request.data
+        venue_serializer = VenueSerializer(data=data)
 
-        if venue_serializer.is_valid():
-            venue_serializer.save()
-            return Response(venue_serializer.data)
+        address_serializer = AddressSerializer(data=data['address'])
+
+        try:
+            address = Address.objects.get(address_line_1=data['address']['address_line_1'],
+            address_line_2= data['address']['address_line_2'] if data['address']['address_line_2'] is not None else "",
+            city=data['address']['city'],
+            state=data['address']['state'],
+            zip=data['address']['zip'],
+            )
+        except ObjectDoesNotExist:
+            #calculateCoordinates(data['address'].values())
+            Address.objects.create(**data['address'])
+            
+        else:
+            data['address'] = address.id
+
+        
+
+        # Here is need to search all the individuals that are in the KeyPersons list, and check if they exist or not.
+
+        if (venue_serializer.is_valid()):
+            n = venue_serializer.save()
+            
+            return Response(venue_serializer.data, status=status.HTTP_201_CREATED)
         return Response(venue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EventDetail(APIView):
@@ -89,6 +112,17 @@ class EventDetail(APIView):
 ###
 #    FUNCTION BASED VIEWS
 ###
+
+def calculateCoordinates(address):
+    addy = ', '.join(address)
+    result = geocoder.arcgis(location=addy)
+    if result.ok:
+        lat, lon = result.latlng
+        print(lat)
+        print(lon)
+    else:
+        raise Exception("I have gotten a bad result :-(")
+    
 
 @api_view(['GET'])
 def getUser(request, uid):

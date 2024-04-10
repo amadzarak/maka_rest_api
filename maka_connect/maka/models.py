@@ -74,11 +74,10 @@ class Organization(models.Model):
     key_persons = models.ManyToManyField(KeyPerson)
 
 class Venue(models.Model):
-    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
+    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
     venue_name = models.TextField()
-    owner = models.TextField()
-    point_of_contact = models.ManyToManyField(KeyPerson)
-    coordinates = models.TextField()
+    key_persons = models.ManyToManyField(KeyPerson, blank=True)
+    coordinates = models.TextField(null=True)
 
 
 """
