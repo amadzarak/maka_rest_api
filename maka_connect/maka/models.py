@@ -108,6 +108,14 @@ class Event(models.Model):
     event_type = models.ForeignKey(EventType, null=True, on_delete=models.CASCADE)
     venue = models.ForeignKey(Venue, null=True, on_delete=models.CASCADE)
 
+    @classmethod
+    def create(cls, name, description, require_tickets, password_protected, visibility, cost, event_type_id, venue_id):
+        event_type = EventType.objects.get(id=event_type_id)
+        venue = Venue.objects.get(id=venue_id)
+        event = cls(name=name, description=description, require_tickets=require_tickets, password_protected=password_protected, visibility=visibility, cost=cost, event_type=event_type, venue=venue)
+        event.save()
+        return event
+
 class EventDate(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     start_date = models.DateField()

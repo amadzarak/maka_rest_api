@@ -39,8 +39,9 @@ class EventList(APIView):
 
         if (event_serializer.is_valid()):
             n = event_serializer.save()
-            EventDate.objects.create(event_id=n.id, **data['event_date'])
-            EventUser.objects.create(event_id=n.id, **data['event_user'])
+            
+            EventDate.objects.create(event=Event.objects.get(id=n.id), **data['event_date'])
+            EventUser.objects.create(event=n.id, **data['event_user'])
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
