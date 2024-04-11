@@ -33,8 +33,10 @@ ALLOWED_HOSTS = ["192.168.1.239"]
 INSTALLED_APPS = [
     'maka',
     'apis',
+    'daphne',
     'rest_framework',
     'djangoviz',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +49,28 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ]
+}
+
+"""
+    Please not that an InMemoryChannelLayer is only appropriate for Development and testing. Before production pls consider another Channel type
+"""
+
+ASGI_APPLICATION = 'maka_connect.asgi.application'
+"""
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("0.0.0.0", 6379)],
+        },
+    },
+}
+"""
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
 }
 
 MIDDLEWARE = [

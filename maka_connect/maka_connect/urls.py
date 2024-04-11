@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from maka.routing import websocket_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('apis.urls')), 
+    path('api/v1/', include('apis.urls')),
+    path('sox/', include('maka.urls')),
+    
+
 ]

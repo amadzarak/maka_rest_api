@@ -31,9 +31,11 @@ class EventList(APIView):
         try:
             event_type = EventType.objects.get(name=data['event_type']['name'])
         except ObjectDoesNotExist:
-            EventType.objects.create(**data['event_type'])
+            newEventType = EventType.objects.create(**data['event_type'])
+            print(newEventType.id)
+            data['event_type'] = newEventType.id
         else:
-            data['type'] = event_type.id
+            data['event_type'] = event_type.id
 
         if (event_serializer.is_valid()):
             n = event_serializer.save()
@@ -41,6 +43,24 @@ class EventList(APIView):
             EventUser.objects.create(event_id=n.id, **data['event_user'])
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class KeyPersons(APIView):
+    def post(self, request, format=None):
+        print(request.data)
+        data = request.data
+        key_person_serializer = KeyPersonSerializer(data=data)
+        try:
+            key_person = KeyPerson.objects.get(phone=data['phone'])
+        except ObjectDoesNotExist:
+            KeyPerson.objects.create(**data)
+        else:
+            return Response(key_person_serializer.data, status=200)
+        
+        if (key_person_serializer.is_valid()):
+            key_person_serializer.save()
+            return Response(key_person_serializer.data, status=status.HTTP_201_CREATED)
+
+
 
 
 class VenueList(APIView):
@@ -142,6 +162,7 @@ def getFullProfile(request, uid):
     user = User.objects.get(pk=uid)
     profile = Profile.objects.get(user=uid)
     conversation_topics = ConversationStarters.objects.filter(user=uid)
+    
     return Response({"user": UserSerializer(user, many=False).data, 
                      "profile": ProfileSerializer(profile, many=False).data, 
                      "conversation_starters": ConversationStarterSerializer(conversation_topics, many=True).data})

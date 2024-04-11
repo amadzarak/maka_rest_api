@@ -13,6 +13,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = '__all__'
 
+class GuestContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuestContacts
+        fields = '__all__'
+
 class UserInteractionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInteraction
@@ -90,4 +95,9 @@ class VenueSerializer(serializers.ModelSerializer):
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
+        fields = '__all__'
+
+class KeyPersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KeyPerson
         fields = '__all__'
