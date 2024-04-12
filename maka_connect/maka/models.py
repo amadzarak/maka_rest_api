@@ -113,6 +113,9 @@ class Event(models.Model):
     cost = models.FloatField()
     event_type = models.ForeignKey(EventType, null=True, on_delete=models.CASCADE)
     venue = models.ForeignKey(Venue, null=True, on_delete=models.CASCADE)
+
+    #def is_ticketed(self):
+    #    return self.require_tickets
     
 
 class EventDate(models.Model):
@@ -139,7 +142,7 @@ class EventUser(models.Model):
 
 class EventCheckIn(models.Model):
     # Maybe rename to EventGuest
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='eventcheckins', on_delete=models.CASCADE)
     user = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
     check_in_time = models.DateTimeField(auto_now_add=True)
     guest_type = models.CharField(max_length=200)
@@ -188,6 +191,9 @@ class Ticket(models.Model):
     # Get user by phone etc etc.
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     event = models.ForeignKey(Event, on_delete=models.DO_NOTHING)
+
+    def is_valid(self):
+        return True
 
 class EventPromotion(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)

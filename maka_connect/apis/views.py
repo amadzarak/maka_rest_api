@@ -2,15 +2,19 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.core import serializers as core_serializers
 from maka.models import *
 from .serializers import *
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 
 import geocoder
 import dateparser
+
+import datetime
 ###
 #    CLASS BASED VIEWS
 ###
@@ -192,6 +196,10 @@ def getProfile(request, uid):
     serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
+
+
+
+
 @api_view(['GET'])
 def getFullProfile(request, uid):
     user = User.objects.get(pk=uid)
@@ -203,16 +211,26 @@ def getFullProfile(request, uid):
                      "conversation_starters": ConversationStarterSerializer(conversation_topics, many=True).data})
 
 
+@api_view(['GET'])
+def getGuestsInEvent(request, eid):
+    event = Event.objects.get(pk=eid)
+    event_check_ins = event.eventcheckins.all()
+    qs_json = EventCheckInSerializer(event_check_ins, many=True)
+    return Response(qs_json.data)
+
 @api_view(['POST'])
 def checkInEvent(request):
     event = Event.objects.get(pk=request.data['event_id'])
-    return Response({"hi": "hi"})
-    #if (event.is_ticketed is True):
-    #    ticket = Ticket.objects.get(user=uid, event=event_id)
-    #    if ticket.is_valid():
-    #        return Response({"Error": "Ticket not Found"})
-    #    else:
-    #        return Response({"Status": "Ticket Verified"})
+    check_in_object = EventCheckIn.objects.create(check_in_time= datetime.datetime.now(), guest_type= "guest", is_host= False, **request.data)
+    check_in_serializer = EventCheckInSerializer(check_in_object)
+    return Response(check_in_serializer.data)
+    #if (event.require_tickets is True):
+    #    return Response({"hi": "hi"})
+        #ticket = Ticket.objects.get(user=uid, event=event_id)
+        #if ticket.is_valid():
+        #    return Response({"Error": "Ticket not Found"})
+        #else:
+        #    return Response({"Status": "Ticket Verified"})
 
 @api_view(['POST'])
 def likeUser(request):

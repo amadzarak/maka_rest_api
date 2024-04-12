@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from maka.models import *
+from maka.models import Profile
 
 
 
@@ -9,6 +10,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProfileSerializer(serializers.ModelSerializer):
+
+    def get_name(self, uid):
+        profile = Profile.objects.get(user=uid)
+        return profile.nickName
+    
     class Meta:
         model = Profile
         fields = '__all__'
@@ -48,12 +54,15 @@ class EventUserSerializer(serializers.ModelSerializer):
         return EventUser.objects.create(**validated_data)
 
 class EventCheckInSerializer(serializers.ModelSerializer):
-    """
-    This class is sperate from the Event object when serializing.
-    """
+    guest_name = serializers.SerializerMethodField()
+
+    def get_guest_name(self, obj):
+        profile = Profile.objects.get(user=obj.user)
+        return profile.nickName
+
     class Meta:
         model = EventCheckIn
-        fields = '__all__'
+        fields = ('event', 'user', 'check_in_time', 'guest_type', 'is_host', 'guest_name')
 
 class EventDateSerializer(serializers.ModelSerializer):
     class Meta:
