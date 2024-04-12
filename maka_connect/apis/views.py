@@ -41,7 +41,8 @@ class EventList(APIView):
             n = event_serializer.save()
             print(n.id)
             EventDate.objects.create(event=n, **data['event_date'])
-            EventUser.objects.create(event=n, **data['event_user'])
+            for x in data['event_user']:
+                EventUser.objects.create(event=n, **x)
             return Response(event_serializer.data, status=status.HTTP_201_CREATED)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -129,6 +130,34 @@ class EventDetail(APIView):
         event.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class VenueDetail(APIView):
+    """
+    Requests pertaining to a specific Event that exists on database
+    """    
+    def get_venue(self, pk):
+        try:
+            return Venue.objects.get(pk=pk)
+        except:
+            return Http404
+    
+    def get(self, request, pk, format=None):
+        venue = self.get_venue(pk)
+        venue_serializer = VenueSerializer(venue)
+        return Response(venue_serializer.data)
+    
+    def put(self, request, pk, format=None):
+        venue = self.get_venue(pk)
+        venue_serializer = VenueSerializer(venue, data=request.data)
+        if venue_serializer.is_valid():
+            venue_serializer.save()
+            return Response(venue_serializer.data)
+        return Response(venue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        venue = self.get_venue(pk)
+        venue.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 ###
 #    FUNCTION BASED VIEWS
@@ -151,6 +180,11 @@ def getUser(request, uid):
     serializer = UserSerializer(users, many=False)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getAddress(request, id):
+    address = Address.objects.get(id=id)
+    serializer = AddressSerializer(address, many=False)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getProfile(request, uid):
@@ -170,15 +204,15 @@ def getFullProfile(request, uid):
 
 
 @api_view(['POST'])
-def checkInEvent(request, uid, event_id):
-    event = Event.objects.get(pk=event_id)
-
-    if (event.is_ticketed is True):
-        ticket = Ticket.objects.get(user=uid, event=event_id)
-        if ticket.is_valid():
-            return Response({"Error": "Ticket not Found"})
-        else:
-            return Response({"Status": "Ticket Verified"})
+def checkInEvent(request):
+    event = Event.objects.get(pk=request.data['event_id'])
+    return Response({"hi": "hi"})
+    #if (event.is_ticketed is True):
+    #    ticket = Ticket.objects.get(user=uid, event=event_id)
+    #    if ticket.is_valid():
+    #        return Response({"Error": "Ticket not Found"})
+    #    else:
+    #        return Response({"Status": "Ticket Verified"})
 
 @api_view(['POST'])
 def likeUser(request):

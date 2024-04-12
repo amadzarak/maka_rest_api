@@ -84,10 +84,16 @@ class Organization(models.Model):
     key_persons = models.ManyToManyField(KeyPerson)
 
 class Venue(models.Model):
+    class LeadStatus(models.TextChoices):
+        PROSPECT = 'PT', _('Prospect')
+        CLIENT = 'CT', _('Client')
+
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING, null=True)
     venue_name = models.TextField()
     key_persons = models.ManyToManyField(KeyPerson, blank=True)
     coordinates = models.TextField(null=True)
+    lead_status = models.CharField(max_length=2, choices=LeadStatus.choices, default=LeadStatus.PROSPECT)
+    
 
 
 """
@@ -107,6 +113,7 @@ class Event(models.Model):
     cost = models.FloatField()
     event_type = models.ForeignKey(EventType, null=True, on_delete=models.CASCADE)
     venue = models.ForeignKey(Venue, null=True, on_delete=models.CASCADE)
+    
 
 class EventDate(models.Model):
     event = models.OneToOneField(Event, null=True, on_delete=models.CASCADE)
