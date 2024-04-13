@@ -270,7 +270,10 @@ def getUsersLikeRecieved(request, uid):
 
 @api_view(['POST'])
 def likeUser(request):
-    
+
+    if (request.data['target'] == request.data['actor']):
+        print('Entry not recorded. A UserInteraction object cannot be created for a single user')
+        return Response({"message": "A UserInteraction object cannot be created for a single user"})    
     try:
         user_interaction_object = UserInteraction.objects.get(target=request.data['target'], actor=request.data['actor'], current_interaction=True)
     except UserInteraction.DoesNotExist:
@@ -289,9 +292,10 @@ def likeUser(request):
                                                         target=request.data['actor'], 
                                                         current_interaction=True)
             except UserInteraction.DoesNotExist:
+                print('An inverse of the UserIteraction Does Not Exist. This is currently single sided interaction.')
                 pass
             else:
-                print('create a match')
+                print('A Match instance was created.')
                 users = [request.data['actor'], request.data['target']]
                 users.sort()
                 # Need to stuff proper serialization and object cration. This is quite difficult.
@@ -314,6 +318,7 @@ def likeUser(request):
         # Perhaps a field like "CurrentInteraction" == True might work. That way if someone gets unliked, since there is not a current "active" like it can be
         # Re attempted.
         # The "CurrentInteraction" would also help with queries, that way I can record all interactions without worrying about having to parse thru it later.
+        print('Existing UserInteraction. Did not create new entry')
         return Response({"message": "This UserInteraction has already been recorded"})
 
 
