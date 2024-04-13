@@ -219,55 +219,83 @@ def getGuestsInEvent(request, eid):
     return Response(qs_json.data)
 
 @api_view(['POST'])
+def checkInStatus(request):
+    event = Event.objects.get(pk=request.data['event_id'])
+    try:
+        check_in_object = EventCheckIn.objects.get(event=event, guest_type="guest", **request.data)
+    except EventCheckIn.DoesNotExist:
+        return Response({"message": "Not Checked In", "status": False}, status=status.HTTP_202_ACCEPTED)
+    else:
+        return Response({"message": "Already checked in", "status": True}, status=status.HTTP_202_ACCEPTED)
+
+@api_view(['POST'])
 def checkInEvent(request):
     event = Event.objects.get(pk=request.data['event_id'])
-    check_in_object = EventCheckIn.objects.create(check_in_time= datetime.datetime.now(), guest_type= "guest", is_host= False, **request.data)
+    try:
+        check_in_object = EventCheckIn.objects.get(event=event, guest_type="guest", **request.data)
+    except EventCheckIn.DoesNotExist:
+        check_in_object = EventCheckIn.objects.create(check_in_time=datetime.datetime.now(), guest_type="guest", is_host=False, **request.data)
+    else:
+        return Response({"message": "Already checked in"}, status=status.HTTP_400_BAD_REQUEST)
+        
     check_in_serializer = EventCheckInSerializer(check_in_object)
     return Response(check_in_serializer.data)
-    #if (event.require_tickets is True):
-    #    return Response({"hi": "hi"})
-        #ticket = Ticket.objects.get(user=uid, event=event_id)
-        #if ticket.is_valid():
-        #    return Response({"Error": "Ticket not Found"})
-        #else:
-        #    return Response({"Status": "Ticket Verified"})
+
+
+
+@api_view(['GET'])
+def getUsersLikeSent(request, uid):
+    likes = UserInteraction.objects.filter(interaction_type='UserInteractionType.like', actor=uid)
+    print(likes)
+    like_serializer = UserInteractionSerializer(likes, many=True)
+    return Response(like_serializer.data)
 
 @api_view(['POST'])
 def likeUser(request):
-    user_interaction_serializer = UserInteractionSerializer(data=request.data)
-    if user_interaction_serializer.is_valid():
-        target_user = User.objects.get(uid=request.data['target'])
-        actor_user = User.objects.get(uid=request.data['actor'])
-        try:
-            event_object = Event.objects.get(id=request.data['event'])
-        except Event.DoesNotExist:
-            event_object = None
+    
+    try:
+        user_interaction_object = UserInteraction.objects.get(target=request.data['target'], actor=request.data['actor'], current_interaction=True)
+    except UserInteraction.DoesNotExist:
+        user_interaction_serializer = UserInteractionSerializer(data=request.data)
+        if user_interaction_serializer.is_valid():
+            target_user = User.objects.get(uid=request.data['target'])
+            actor_user = User.objects.get(uid=request.data['actor'])
+            try:
+                event_object = Event.objects.get(id=request.data['event'])
+            except Event.DoesNotExist:
+                event_object = None
 
-        
-        try:
-            mutual_like = UserInteraction.objects.get(actor=request.data['target'], 
-                                                    target=request.data['actor'])
-        except UserInteraction.DoesNotExist:
-            pass
-        else:
-            print('create a match')
-            users = [request.data['actor'], request.data['target']]
-            users.sort()
-            # Need to stuff proper serialization and object cration. This is quite difficult.
-            match_object = MatchSerializer({"user1":users[0], "user2":users[1], "active":True})
-            MatchSerializer.create(match_object, validated_data={"active": True, 
-                                                                "user1": User.objects.get(uid=users[0]), 
-                                                                "user2": User.objects.get(uid=users[1])})
+            
+            try:
+                mutual_like = UserInteraction.objects.get(actor=request.data['target'], 
+                                                        target=request.data['actor'])
+            except UserInteraction.DoesNotExist:
+                pass
+            else:
+                print('create a match')
+                users = [request.data['actor'], request.data['target']]
+                users.sort()
+                # Need to stuff proper serialization and object cration. This is quite difficult.
+                match_object = MatchSerializer({"user1":users[0], "user2":users[1], "active":True})
+                MatchSerializer.create(match_object, validated_data={"active": True, 
+                                                                    "user1": User.objects.get(uid=users[0]), 
+                                                                    "user2": User.objects.get(uid=users[1])})
 
-        interaction = UserInteraction.objects.create(
-            target=target_user,
-            actor=actor_user,
-            event=event_object,
-            interaction_type=request.data['interaction_type'],
-        )
-        interaction_serializer = UserInteractionSerializer(interaction)
-        return Response(interaction_serializer.data)
-    return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            interaction = UserInteraction.objects.create(
+                target=target_user,
+                actor=actor_user,
+                event=event_object,
+                interaction_type=request.data['interaction_type'],
+            )
+            interaction_serializer = UserInteractionSerializer(interaction)
+            return Response(interaction_serializer.data)
+        return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        # The thing is this, what if some one unlikes, but then wants to relike the individual. that would not work here.
+        # Perhaps a field like "CurrentInteraction" == True might work. That way if someone gets unliked, since there is not a current "active" like it can be
+        # Re attempted.
+        # The "CurrentInteraction" would also help with queries, that way I can record all interactions without worrying about having to parse thru it later.
+        return Response({"message": "This UserInteraction has already been recorded"})
 
 
 @api_view(['POST'])
