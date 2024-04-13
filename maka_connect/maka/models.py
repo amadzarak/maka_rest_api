@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
@@ -168,6 +169,7 @@ class UserInteraction(models.Model):
     interaction_time = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
     current_interaction = models.BooleanField(null=True, default=True)
+    seen = models.BooleanField(null=True, default=False)
 
 class Matches(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
