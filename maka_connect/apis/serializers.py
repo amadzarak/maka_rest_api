@@ -25,11 +25,37 @@ class GuestContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserInteractionSerializer(serializers.ModelSerializer):
+    target_name = serializers.SerializerMethodField()
+    actor_name = serializers.SerializerMethodField()
+
+    def get_target_name(self, obj):
+        print(obj)
+        profile = Profile.objects.get(user=obj.target)
+        return profile.nickName
+
+    def get_actor_name(self, obj):
+        print(obj)
+        profile = Profile.objects.get(user=obj.actor)
+        return profile.nickName
+
     class Meta:
         model = UserInteraction
         fields = '__all__'
 
 class MatchSerializer(serializers.ModelSerializer):
+    other_user_name = serializers.SerializerMethodField()
+
+
+    def get_other_user_name(self, obj):
+        
+        if obj.user1 == self.context['user_id']:
+            profile = Profile.objects.get(user=obj.user2)
+            return profile.nickName
+            
+        else:
+            profile = Profile.objects.get(user=obj.user1)
+            return profile.nickName
+
     class Meta:
         model = Matches
         fields = '__all__'

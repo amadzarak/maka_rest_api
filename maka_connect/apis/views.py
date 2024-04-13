@@ -1,4 +1,5 @@
 # apis/views.py
+from django.db.models import Q
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -245,7 +246,24 @@ def checkInEvent(request):
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
-    likes = UserInteraction.objects.filter(interaction_type='UserInteractionType.like', actor=uid)
+    # I suppose their could be an option as to whether or not to return inactive ones too, or just the active ones. I think ill do just
+    # active for now.
+    likes = UserInteraction.objects.all().filter(interaction_type='UserInteractionType.like', actor=uid, current_interaction=True)
+    print(likes)
+    like_serializer = UserInteractionSerializer(likes, many=True)
+    return Response(like_serializer.data)
+
+@api_view(['GET'])
+def getUserMatches(request, uid):    
+    matches = Matches.objects.filter(Q(user1_id=uid) | Q(user2_id=uid), active=True)
+    match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
+    return Response(match_serializer.data)
+
+@api_view(['GET'])
+def getUsersLikeRecieved(request, uid):
+    # I suppose their could be an option as to whether or not to return inactive ones too, or just the active ones. I think ill do just
+    # active for now.
+    likes = UserInteraction.objects.all().filter(interaction_type='UserInteractionType.like', target=uid, current_interaction=True)
     print(likes)
     like_serializer = UserInteractionSerializer(likes, many=True)
     return Response(like_serializer.data)
@@ -268,7 +286,8 @@ def likeUser(request):
             
             try:
                 mutual_like = UserInteraction.objects.get(actor=request.data['target'], 
-                                                        target=request.data['actor'])
+                                                        target=request.data['actor'], 
+                                                        current_interaction=True)
             except UserInteraction.DoesNotExist:
                 pass
             else:

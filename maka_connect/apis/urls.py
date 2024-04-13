@@ -6,7 +6,9 @@ from .views import *
 urlpatterns = [
     path('getuser/<str:uid>', getUser),
     path('getprofile/<str:uid>', getFullProfile),
+    path('matches/<str:uid>/', getUserMatches),
     path('sentlikes/<str:uid>/', getUsersLikeSent),
+    path('recievedlikes/<str:uid>/', getUsersLikeRecieved),
     path('checkin/<str:eid>', getGuestsInEvent),
     path('checkin/', checkInEvent),
     path('checkinstatus/', checkInStatus),
