@@ -43,6 +43,7 @@ class LikesConsumer(AsyncWebsocketConsumer):
         params = parse_qs(self.scope["query_string"].decode())
         user = params.get('user', (None,))[0]
         like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
+        print(like_count)
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
 
     @database_sync_to_async
@@ -60,9 +61,15 @@ class LikesConsumer(AsyncWebsocketConsumer):
         req_body = json.loads(text_data)
         print(req_body['user_id'])
         await self.update_seen_status(uid=req_body['user_id'])
-        await self.send(text_data=json.dumps({"message": "Server confirmed status update"}))
+        #await self.send(text_data=json.dumps({"message": "Server confirmed status update"}))
+        like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
+        print(like_count)
+        await self.send(text_data=json.dumps({"unread_messages": like_count}))
 
     async def disconnect(self, close_code):
+        like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
+        print(like_count)
+        await self.send(text_data=json.dumps({"unread_messages": like_count}))
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
     """async def connect(self):
         self.room_group_name = 'unread_messages'
