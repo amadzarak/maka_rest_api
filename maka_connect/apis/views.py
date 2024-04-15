@@ -314,10 +314,6 @@ def likeUser(request):
             return Response(interaction_serializer.data)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        # The thing is this, what if some one unlikes, but then wants to relike the individual. that would not work here.
-        # Perhaps a field like "CurrentInteraction" == True might work. That way if someone gets unliked, since there is not a current "active" like it can be
-        # Re attempted.
-        # The "CurrentInteraction" would also help with queries, that way I can record all interactions without worrying about having to parse thru it later.
         print('Existing UserInteraction. Did not create new entry')
         return Response({"message": "This UserInteraction has already been recorded"})
 

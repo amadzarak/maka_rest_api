@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-74w##6j@uwh)0=u-6%$8x%qy3kv%8*_@t07285^&w275(ddmj(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.239"]
+ALLOWED_HOSTS = ["192.168.254.149"]
 
 
 # Application definition
@@ -110,10 +110,18 @@ WSGI_APPLICATION = 'maka_connect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'maka_connect_backend', 
-        'USER': 'amad',
+        'NAME': 'makasocial', 
+        'USER': 'amadzarak',
         'PASSWORD': 'fr00tloops',
-        'HOST': '192.168.1.239', 
+        'HOST': '192.168.1.175', 
+        'PORT': '5435',
+    },
+    'aws': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'maka_connect_backend', 
+        'USER': 'maka_admin',
+        'PASSWORD': 'A5L3PrQjfIWgLgi',
+        'HOST': 'maka-rest-api.cd0w8y82orau.us-east-2.rds.amazonaws.com', 
         'PORT': '5432',
     }
 }
