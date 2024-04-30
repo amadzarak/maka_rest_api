@@ -6,14 +6,18 @@ certifi==2024.2.2
 cffi==1.16.0
 channels==4.1.0
 charset-normalizer==3.3.2
+click==8.1.7
 constantly==23.10.4
 cryptography==42.0.5
 daphne==4.1.2
 dateparser==1.2.0
+decorator==5.1.1
 Django==5.0.3
 django-channels==0.7.0
 djangorestframework==3.14.0
 djangoviz==0.1.1
+future==1.0.0
+geocoder==1.38.1
 graphqlclient==0.2.4
 hyperlink==21.0.0
 idna==3.7
@@ -26,6 +30,7 @@ pycparser==2.22
 pyOpenSSL==24.1.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
+ratelim==0.1.6
 regex==2023.12.25
 requests==2.31.0
 requests-oauthlib==2.0.0

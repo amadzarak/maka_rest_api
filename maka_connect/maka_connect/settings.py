@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-74w##6j@uwh)0=u-6%$8x%qy3kv%8*_@t07285^&w275(ddmj(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.254.149"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -34,9 +35,9 @@ INSTALLED_APPS = [
     'maka',
     'apis',
     'daphne',
+    'channels',
     'rest_framework',
     'djangoviz',
-    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+#    'channels',
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -107,7 +110,7 @@ WSGI_APPLICATION = 'maka_connect.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+"""
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'makasocial', 
@@ -116,7 +119,10 @@ DATABASES = {
         'HOST': '192.168.1.175', 
         'PORT': '5435',
     },
-    'aws': {
+    """
+DATABASES = {
+    
+    'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'maka_connect_backend', 
         'USER': 'maka_admin',
