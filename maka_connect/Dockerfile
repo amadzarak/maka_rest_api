@@ -20,7 +20,9 @@ COPY requirements.txt /maka_rest_api/
 RUN pip install -r requirements.txt
 COPY . /maka_rest_api/
 
+RUN pip uninstall channels
+RUN pip uninstall daphne
 RUN pip install -U channels["daphne"]
 
 EXPOSE 4500
-RUN daphne -b 0.0.0.0 -p 4500 maka_connect.asgi:application
+CMD ["python", "manage.py"]
