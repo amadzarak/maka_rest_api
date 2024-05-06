@@ -22,7 +22,7 @@ COPY . /maka_rest_api/
 
 RUN pip uninstall channels
 RUN pip uninstall daphne
-RUN pip install -U channels["daphne"]
+RUN pip3 install -U channels["daphne"]
 
 EXPOSE 4500
 CMD ["python", "manage.py"]
