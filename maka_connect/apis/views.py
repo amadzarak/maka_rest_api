@@ -338,13 +338,15 @@ def unlikeUser(request):
     else:
         print('Previous entry updated. Current_Interaction status set to False')
         print('Creating new UserInteraction record, denoting Unlike action')
-        UserInteraction.objects.create(
+        unlike_interaction = UserInteraction.objects.create(
                 target=request.data['target'],
                 actor=request.data['actor'],
                 event=request.data['event'],
                 interaction_type=request.data['interaction_type'],
             )
-    return NotImplemented()
+        interaction_serializer = UserInteractionSerializer(unlike_interaction)
+        return Response(interaction_serializer.data)
+
 
 @api_view(['PATCH'])
 def unmatchUser(request):
