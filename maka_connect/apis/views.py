@@ -341,7 +341,7 @@ def unlikeUser(request):
         UserInteraction.objects.create(
                 target=request.data['target'],
                 actor=request.data['actor'],
-                event=request.data['event_id'],
+                event=request.data['event'],
                 interaction_type=request.data['interaction_type'],
             )
     return NotImplemented()
