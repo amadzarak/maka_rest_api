@@ -318,11 +318,8 @@ def likeUser(request):
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
             )
-            interaction_serializer = UserInteractionSerializer(data=request.data)
-            if interaction_serializer.is_valid():
-                UserInteractionSerializer.create(interaction_serializer)
-                return Response(interaction_serializer.data)
-
+            interaction_serializer = UserInteractionSerializer(interaction)
+            return Response(interaction_serializer.data)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         print('Existing UserInteraction. Did not create new entry')
@@ -341,10 +338,11 @@ def unlikeUser(request):
     else:
         print('Previous entry updated. Current_Interaction status set to False')
         print('Creating new UserInteraction record, denoting Unlike action')
-        unlike_interaction_serializer = UserInteractionSerializer()
-            
-        interaction_serializer = UserInteractionSerializer(data=request.data)
-        return Response(interaction_serializer.data)
+        user_interaction_serializer = UserInteractionSerializer(data=request.data)
+        if user_interaction_serializer.is_valid():
+            user_interaction_serializer.save()
+        UserInteraction.create(**user_interaction_serializer)
+        return Response({"message": "Unlike complete"})  
 
 
 @api_view(['PATCH'])
