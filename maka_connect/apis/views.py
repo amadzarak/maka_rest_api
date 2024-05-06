@@ -243,7 +243,7 @@ def checkInEvent(request):
     return Response(check_in_serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def checkUserInteractionExists(request):
     try:
         current_interaction_object = UserInteraction.objects.get(interaction_type='UserInteractionType.like', actor=request.data['actor'], target=request.data['target'], current_interaction=True)
