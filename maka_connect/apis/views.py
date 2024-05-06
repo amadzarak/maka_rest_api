@@ -323,13 +323,7 @@ def likeUser(request):
             return Response(interaction_serializer.data)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        if user_interaction_object.interaction_type == 'UserInteractionType.dislike':
-            user_interaction_object.update(current_interaction=False)
-            user_interaction_serializer = UserInteractionSerializer(data=request.data)
-            if user_interaction_serializer.is_valid():
-                user_interaction_serializer.save()
-
-        print('Existing UserInteraction. Did not create new entry')
+        print('Current UserInteraction exists. Did not create new entry')
         return Response({"message": "This UserInteraction has already been recorded"})
 
 
@@ -344,10 +338,6 @@ def unlikeUser(request):
         print('cannot unlike a user if a LikeInteraction does not exist prior')
     else:
         print('Previous entry updated. Current_Interaction status set to False')
-        print('Creating new UserInteraction record, denoting Unlike action')
-        user_interaction_serializer = UserInteractionSerializer(data=request.data)
-        if user_interaction_serializer.is_valid():
-            user_interaction_serializer.save()
         return Response({"message": "Unlike complete"})  
 
 
