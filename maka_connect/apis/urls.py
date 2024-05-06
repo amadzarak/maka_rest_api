@@ -18,6 +18,7 @@ urlpatterns = [
     path('address/<int:id>/', getAddress),
     path('venues/<int:pk>/', VenueDetail.as_view()),
     path('likeuser/', likeUser),
-    path('keypersons/', KeyPersons.as_view())
+    path('keypersons/', KeyPersons.as_view()),
+    path('interactionstatus/', checkUserInteractionExists)
 ]
 
