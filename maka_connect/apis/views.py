@@ -245,9 +245,12 @@ def checkInEvent(request):
 
 @api_view(['GET'])
 def checkUserInteractionExists(request):
-    current_interaction_object = UserInteraction.objects.get(interaction_type='UserInteractionType.like', actor=request.data['actor'], target=request.data['target'], current_interaction=True)
-    user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
-    return Response(user_interaction_serializer.data)
+    try:
+        current_interaction_object = UserInteraction.objects.get(interaction_type='UserInteractionType.like', actor=request.data['actor'], target=request.data['target'], current_interaction=True)
+        user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
+        return Response(user_interaction_serializer.data)
+    except:
+        return Response({"message": "A current interaction between the two users could not be found"})
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
