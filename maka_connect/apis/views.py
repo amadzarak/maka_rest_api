@@ -328,6 +328,22 @@ def likeUser(request):
 
 @api_view(['POST'])
 def unlikeUser(request):
+    if (request.data['target'] == request.data['actor']):
+        print('Entry not recorded. A UserInteraction object cannot be created for a single user')
+        return Response({"message": "A UserInteraction object cannot be created for a single user"})  
+    try:
+        user_interaction_object = UserInteraction.objects.filter(target=request.data['target'], actor=request.data['actor'], current_interaction=True).update(current_interaction=False)
+    except UserInteraction.DoesNotExist:
+        print('cannot unlike a user if a LikeInteraction does not exist prior')
+    else:
+        print('Previous entry updated. Current_Interaction status set to False')
+        print('Creating new UserInteraction record, denoting Unlike action')
+        UserInteraction.objects.create(
+                target=request.data['target'],
+                actor=request.data['actor'],
+                event=request.data['event_id'],
+                interaction_type=request.data['interaction_type'],
+            )
     return NotImplemented()
 
 @api_view(['PATCH'])
