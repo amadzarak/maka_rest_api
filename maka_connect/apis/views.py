@@ -318,11 +318,11 @@ def likeUser(request):
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
             )
-            interaction_serializer = UserInteractionSerializer(interaction)
+            interaction_serializer = UserInteractionSerializer(data=request.data)
             if interaction_serializer.is_valid():
                 UserInteractionSerializer.create(interaction_serializer)
                 return Response(interaction_serializer.data)
-            
+
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         print('Existing UserInteraction. Did not create new entry')
