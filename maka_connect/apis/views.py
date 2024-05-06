@@ -323,6 +323,12 @@ def likeUser(request):
             return Response(interaction_serializer.data)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
+        if user_interaction_object.interaction_type == 'UserInteractionType.dislike':
+            user_interaction_object.update(current_interaction=False)
+            user_interaction_serializer = UserInteractionSerializer(data=request.data)
+            if user_interaction_serializer.is_valid():
+                user_interaction_serializer.save()
+
         print('Existing UserInteraction. Did not create new entry')
         return Response({"message": "This UserInteraction has already been recorded"})
 
@@ -343,6 +349,8 @@ def unlikeUser(request):
         if user_interaction_serializer.is_valid():
             user_interaction_serializer.save()
         return Response({"message": "Unlike complete"})  
+
+
 
 
 @api_view(['PATCH'])
