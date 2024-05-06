@@ -246,7 +246,8 @@ def checkInEvent(request):
 @api_view(['POST'])
 def checkUserInteractionExists(request):
     try:
-        current_interaction_object = UserInteraction.objects.get(interaction_type='UserInteractionType.like', actor=request.data['actor'], target=request.data['target'], current_interaction=True)
+        #interaction_type='UserInteractionType.like',  so now its more general.
+        current_interaction_object = UserInteraction.objects.get(actor=request.data['actor'], target=request.data['target'], current_interaction=True)
         user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
         return Response(user_interaction_serializer.data)
     except:
@@ -341,7 +342,6 @@ def unlikeUser(request):
         user_interaction_serializer = UserInteractionSerializer(data=request.data)
         if user_interaction_serializer.is_valid():
             user_interaction_serializer.save()
-        UserInteraction.create(**user_interaction_serializer)
         return Response({"message": "Unlike complete"})  
 
 
