@@ -247,7 +247,7 @@ def checkInEvent(request):
 def checkUserInteractionExists(request):
     current_interaction_object = UserInteraction.objects.get(interaction_type='UserInteractionType.like', actor=request.data['actor'], target=request.data['target'], current_interaction=True)
     user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
-    return user_interaction_serializer
+    return Response(user_interaction_serializer.data)
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
