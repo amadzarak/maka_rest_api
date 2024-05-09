@@ -259,7 +259,7 @@ def checkMatchStatus(request):
         #interaction_type='UserInteractionType.like',  so now its more general.
         users = [request.data['actor'], request.data['target']]
         users.sort()
-        current_match_object = Matches.objects.get(user1=users[0], user2=users[1], target=request.data['target'], active=True)
+        current_match_object = Matches.objects.get(user1=users[0], user2=users[1], active=True)
         user_match_serializer = MatchSerializer(current_match_object)
         return Response(user_match_serializer.data)
     except:
