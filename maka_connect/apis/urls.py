@@ -20,6 +20,7 @@ urlpatterns = [
     path('likeuser/', likeUser),
     path('unlikeuser/', unlikeUser),
     path('keypersons/', KeyPersons.as_view()),
-    path('interactionstatus/', checkUserInteractionExists)
+    path('interactionstatus/', checkUserInteractionExists),
+    path('matchstatus/', checkMatchStatus)
 ]
 
