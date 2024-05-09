@@ -251,7 +251,7 @@ def checkUserInteractionExists(request):
         user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
         return Response(user_interaction_serializer.data)
     except:
-        return Response({"message": "A current interaction between the two users could not be found"})
+        return Response({"interaction_type": "UserInteractionType.none"})
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
@@ -320,7 +320,7 @@ def likeUser(request):
                 interaction_type=request.data['interaction_type'],
             )
             interaction_serializer = UserInteractionSerializer(interaction)
-            return Response(interaction_serializer.data)
+            return Response(interaction_serializer.data, status=status.HTTP_200_OK)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         print('Current UserInteraction exists. Did not create new entry')
