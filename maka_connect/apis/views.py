@@ -261,7 +261,7 @@ def checkMatchStatus(request):
         users.sort()
         current_match_object = Matches.objects.get(user1=users[0], user2=users[1], active=True)
         user_match_serializer = MatchSerializer(current_match_object)
-        print(users)
+        print(current_match_object)
         return Response(user_match_serializer.data)
     except:
         return Response({"interaction_type": "MatchStatus.none", "current_interaction": True})
