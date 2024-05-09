@@ -251,7 +251,7 @@ def checkUserInteractionExists(request):
         user_interaction_serializer = UserInteractionSerializer(current_interaction_object)
         return Response(user_interaction_serializer.data)
     except:
-        return Response({"interaction_type": "UserInteractionType.none"})
+        return Response({"interaction_type": "UserInteractionType.none", "current_interaction": True})
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
