@@ -264,7 +264,6 @@ def checkMatchStatus(request):
         return Response({"interaction_type": "MatchStatus.none", "current_interaction": True})
     else:
         user_match_serializer = MatchSerializer(current_match_object)
-        print(user_match_serializer.data)
         return Response(user_match_serializer.data)
 
 
