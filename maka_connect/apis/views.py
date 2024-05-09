@@ -260,11 +260,13 @@ def checkMatchStatus(request):
         users = [request.data['actor'], request.data['target']]
         users.sort()
         current_match_object = Matches.objects.get(user1=users[0], user2=users[1], active=True)
+    except:
+        return Response({"interaction_type": "MatchStatus.none", "current_interaction": True})
+    else:
         user_match_serializer = MatchSerializer(current_match_object)
         print(user_match_serializer.data)
         return Response(user_match_serializer.data)
-    except:
-        return Response({"interaction_type": "MatchStatus.none", "current_interaction": True})
+
 
 @api_view(['GET'])
 def getUsersLikeSent(request, uid):
