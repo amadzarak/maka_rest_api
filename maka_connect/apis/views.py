@@ -204,7 +204,7 @@ def createProfileV1(request):
     try:
         user_object = User.objects.get(pk=request.data['user_id'])
     except User.DoesNotExist:
-        new_user_object = User.objects.create(credits=1, **request.data)
+        new_user_object = User.objects.create(uid=request.data['user_id'])
     else:
         return Response({"message": "User Exists"}, status=status.HTTP_400_BAD_REQUEST)
         
