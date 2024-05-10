@@ -199,7 +199,7 @@ def getProfile(request, uid):
 
 
 
-@api_view('POST')
+@api_view(['POST'])
 def createProfileV1(request):
     try:
         user_object = User.objects.get(pk=request.data['user_id'])
