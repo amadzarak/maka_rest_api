@@ -21,6 +21,7 @@ urlpatterns = [
     path('unlikeuser/', unlikeUser),
     path('keypersons/', KeyPersons.as_view()),
     path('interactionstatus/', checkUserInteractionExists),
-    path('matchstatus/', checkMatchStatus)
+    path('matchstatus/', checkMatchStatus),
+    path('createprofile', createProfileV1)
 ]
 
