@@ -294,7 +294,7 @@ def getUserMatches(request, uid):
     i = 0
     while i < len(match_serializer.data):
         if (match_serializer.data[i]['other_user_name'] == 'no_match'):
-            del match_serializer.data[i]
+            match_serializer.data.pop(i)
         else:
             i += 1
     return Response(match_serializer.data)
