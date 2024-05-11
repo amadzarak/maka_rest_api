@@ -47,17 +47,13 @@ class MatchSerializer(serializers.ModelSerializer):
     other_user_id = serializers.SerializerMethodField()
 
     def get_other_user_id(self, obj):
-        print(obj)
-        print(obj.user1)
-        print(obj.user2_id)
-        print(obj.user2.uid)
-        if obj.user1 == self.context['user_id']:
+        if obj.user1_id == self.context['user_id']:
             return obj.user2_id
         else:
             return obj.user1_id
 
     def get_other_user_name(self, obj):
-        if obj.user1 == self.context['user_id']:
+        if obj.user1_id == self.context['user_id']:
             profile = Profile.objects.get(user=obj.user2)
             return profile.nickName
         else:
