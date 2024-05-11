@@ -288,7 +288,8 @@ def getUsersLikeSent(request, uid):
 
 @api_view(['GET'])
 def getUserMatches(request, uid):    
-    matches = Matches.objects.filter(Q(user1_id=uid) | Q(user2_id=uid), active=True)
+    #matches = Matches.objects.filter(Q(user1_id=uid) | Q(user2_id=uid), active=True)
+    matches = Matches.objects.filter(Q(user1=uid) | Q(user2=uid), active=True)
     match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
     return Response(match_serializer.data)
 
