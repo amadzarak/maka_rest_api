@@ -28,7 +28,7 @@ class FirebaseClient:
             return doc.to_dict()['name']
         else:
             print("No such document!")
-        return ''
+        return 'no_match'
         
     def all(self):
         """Get all users from firestore database"""
