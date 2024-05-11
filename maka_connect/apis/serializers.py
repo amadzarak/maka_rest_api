@@ -66,7 +66,6 @@ class MatchSerializer(serializers.ModelSerializer):
         #    profile = Profile.objects.get(user=obj.user1)
         #    return profile.nickName
         name = self.client.get_by_id(obj.user1)
-        print(name)
         return "Loading"
         """ Basically the band aid right now is that it will query firebase instead. """
 
