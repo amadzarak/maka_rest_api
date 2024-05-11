@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 import geocoder
 import dateparser
-
+import firebase_admin.messaging as messaging
 import datetime
 ###
 #    CLASS BASED VIEWS
@@ -387,6 +387,14 @@ def send_user_alerts(request):
     for i in members:
         fcm.append(client.get_fcm_tokens(i))
     print(fcm)
+    message = messaging.MulticastMessage(
+    data={'score': '850', 'time': '2:45'},
+    tokens=fcm,
+)
+    response = messaging.send_multicast(message)
+    # See the BatchResponse reference documentation
+    # for the contents of response.
+    print('{0} messages were sent successfully'.format(response.success_count))
     return Response({'message': 'trying this out'})
 
 
