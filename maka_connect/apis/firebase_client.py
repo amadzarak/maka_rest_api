@@ -23,6 +23,7 @@ class FirebaseClient:
 
     def get_by_id(self, id):
         """Get users on firestore database using document id"""
+        print('debug did i get to this function?')
         doc_ref = self._collection.document(id)
         doc = doc_ref.get()
 
