@@ -22,6 +22,7 @@ urlpatterns = [
     path('keypersons/', KeyPersons.as_view()),
     path('interactionstatus/', checkUserInteractionExists),
     path('matchstatus/', checkMatchStatus),
-    path('createprofile/', createProfileV1)
+    path('createprofile/', createProfileV1),
+    path('createprofile/', send_user_alerts),
 ]
 
