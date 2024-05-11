@@ -23,6 +23,6 @@ urlpatterns = [
     path('interactionstatus/', checkUserInteractionExists),
     path('matchstatus/', checkMatchStatus),
     path('createprofile/', createProfileV1),
-    path('createprofile/', send_user_alerts),
+    path('sendalert/', send_user_alerts),
 ]
 
