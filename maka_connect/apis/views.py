@@ -291,10 +291,12 @@ def getUserMatches(request, uid):
     #matches = Matches.objects.filter(Q(user1_id=uid) | Q(user2_id=uid), active=True)
     matches = Matches.objects.filter(Q(user1=uid) | Q(user2=uid), active=True)
     match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
-    for item in match_serializer.data:
-        print(item['other_user_name'])
+    i = 0
+    while i < len(match_serializer.data):
         if (item['other_user_name'] == 'no_match'):
-            match_serializer.data.remove(item)
+            del match_serializer.data[i]
+        else:
+            i += 1
     return Response(match_serializer.data)
 
 @api_view(['GET'])
