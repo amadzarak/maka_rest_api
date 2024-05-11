@@ -313,8 +313,10 @@ def likeUser(request):
     except UserInteraction.DoesNotExist:
         user_interaction_serializer = UserInteractionSerializer(data=request.data)
         if user_interaction_serializer.is_valid():
-            target_user = User.objects.get(uid=request.data['target'])
-            actor_user = User.objects.get(uid=request.data['actor'])
+            #target_user = User.objects.get(uid=request.data['target'])
+            #actor_user = User.objects.get(uid=request.data['actor'])
+            target_user = request.data['target']
+            actor_user = request.data['actor']
             try:
                 event_object = Event.objects.get(id=request.data['event'])
             except Event.DoesNotExist:
