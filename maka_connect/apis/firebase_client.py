@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 from django.conf import settings
-
+import os
 
 class FirebaseClient:
 
@@ -14,7 +14,7 @@ class FirebaseClient:
 
 
 # Use a service account.
-            cred = credentials.Certificate('~/serviceAccountKey.json')
+            cred = credentials.Certificate(os.path.expanduser('~/serviceAccountKey.json'))
             firebase_admin.initialize_app(cred)
         self._db = firestore.client()
 
