@@ -163,8 +163,8 @@ class Transaction(models.Model):
 
 class UserInteraction(models.Model):
     # Maybe rename this to GuestInteraction?
-    #target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target")
-    #actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actor")
+    target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target")
+    actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actor")
     #target = models.TextField()
     #actor = models.TextField()
     interaction_type = models.TextField()
