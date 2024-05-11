@@ -293,7 +293,7 @@ def getUserMatches(request, uid):
     match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
     i = 0
     while i < len(match_serializer.data):
-        if (item['other_user_name'] == 'no_match'):
+        if (match_serializer.data['other_user_name'] == 'no_match'):
             del match_serializer.data[i]
         else:
             i += 1
