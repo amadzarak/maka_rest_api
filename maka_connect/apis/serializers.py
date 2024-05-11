@@ -49,8 +49,9 @@ class MatchSerializer(serializers.ModelSerializer):
     def get_other_user_id(self, obj):
         print(obj)
         print(obj.user1)
-        print(obj.user2)
-        print(obj.user2.id)
+        print(obj.user2_id)
+        print(obj.user2_uid)
+        print(obj.user2.uid)
         if obj.user1 == self.context['user_id']:
             return obj.user2_id
         else:
