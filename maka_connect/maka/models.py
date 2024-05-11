@@ -163,8 +163,10 @@ class Transaction(models.Model):
 
 class UserInteraction(models.Model):
     # Maybe rename this to GuestInteraction?
-    target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target")
-    actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actor")
+    #target = models.ForeignKey(User, on_delete=models.CASCADE, related_name="target")
+    #actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actor")
+    target = models.TextField()
+    actor = models.TextField()
     interaction_type = models.TextField()
     interaction_time = models.DateTimeField(auto_now_add=True)
     event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
@@ -172,8 +174,10 @@ class UserInteraction(models.Model):
     seen = models.BooleanField(null=True, default=False)
 
 class Matches(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user2")
+    #user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
+    #user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user2")
+    user1 = models.TextField
+    user2 = models.TextField
     timestamp = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField()
 
