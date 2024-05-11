@@ -50,7 +50,6 @@ class MatchSerializer(serializers.ModelSerializer):
         print(obj)
         print(obj.user1)
         print(obj.user2_id)
-        print(obj.user2_uid)
         print(obj.user2.uid)
         if obj.user1 == self.context['user_id']:
             return obj.user2_id
