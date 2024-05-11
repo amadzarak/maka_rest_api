@@ -40,6 +40,15 @@ class FirebaseClient:
         docs = self._collection.where(field, condition, value).stream()
         return [{**doc.to_dict(), "id": doc.id} for doc in docs]
     
+    def get_event_members(self, event_id):
+        doc_ref = self._db.collection(u'party-groups').document(id)
+        doc = doc_ref.get()
+        if doc.exists:
+            return doc.to_dict()['members']
+        else:
+            print("No such document!")
+        return []
+    
     def get_fcm_tokens(self, id):
         doc_ref = self._collection.document(id)
         doc = doc_ref.get()

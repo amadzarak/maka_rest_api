@@ -381,6 +381,8 @@ def unlikeUser(request):
 def send_user_alerts(request):
     print('hi')
     client = FirebaseClient()
+    members = client.get_event_members(request.data['event_id'])
+    print(members)
     client.get_fcm_tokens(request.data['id'])
     return Response({'message': 'trying this out'})
 
