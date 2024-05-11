@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from maka.models import *
 from maka.models import Profile
-from firebase_client import FirebaseClient
+from .firebase_client import FirebaseClient
 
 
 class UserSerializer(serializers.ModelSerializer):
