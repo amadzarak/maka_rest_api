@@ -292,8 +292,8 @@ def getUserMatches(request, uid):
     matches = Matches.objects.filter(Q(user1=uid) | Q(user2=uid), active=True)
     match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
     for item in match_serializer.data:
-        print(item['name'])
-        if (item['name'] == 'no_match'):
+        print(item['other_user_name'])
+        if (item['other_user_name'] == 'no_match'):
             match_serializer.data.remove(item)
     return Response(match_serializer.data)
 
