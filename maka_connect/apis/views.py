@@ -383,7 +383,10 @@ def send_user_alerts(request):
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
     print(members)
-    client.get_fcm_tokens(request.data['id'])
+    fcm = []
+    for i in members:
+        fcm.append(client.get_fcm_tokens(i))
+    print(fcm)
     return Response({'message': 'trying this out'})
 
 
