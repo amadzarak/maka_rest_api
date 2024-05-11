@@ -56,7 +56,6 @@ class MatchSerializer(serializers.ModelSerializer):
         if obj.user1 == self.context['user_id']:
             profile = Profile.objects.get(user=obj.user2)
             return profile.nickName
-            
         else:
             profile = Profile.objects.get(user=obj.user1)
             return profile.nickName
