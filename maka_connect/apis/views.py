@@ -362,6 +362,15 @@ def unlikeUser(request):
         print('cannot unlike a user if a LikeInteraction does not exist prior')
     else:
         print('Previous entry updated. Current_Interaction status set to False')
+        users = [request.data['actor'], request.data['target']]
+        users.sort()
+        try:
+            current_match_object = Matches.objects.filter(user1=users[0], user2=users[1], active=True).update(active=False)
+        except Matches.DoesNotExist:
+            print('A match does not exist. Continuing')
+        else:
+            print('Set current match to inactive')
+            
         return Response({"message": "Unlike complete"})  
 
 
