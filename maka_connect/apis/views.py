@@ -291,12 +291,7 @@ def getUserMatches(request, uid):
     #matches = Matches.objects.filter(Q(user1_id=uid) | Q(user2_id=uid), active=True)
     matches = Matches.objects.filter(Q(user1=uid) | Q(user2=uid), active=True)
     match_serializer = MatchSerializer(matches, many=True, context={'user_id': uid})
-    i = 0
-    while i < len(match_serializer.data):
-        if (match_serializer.data[i]['other_user_name'] == 'no_match'):
-            match_serializer.data.pop(i)
-        else:
-            i += 1
+    print(match_serializer)
     return Response(match_serializer.data)
 
 @api_view(['GET'])
