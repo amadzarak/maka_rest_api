@@ -63,7 +63,8 @@ class MatchSerializer(serializers.ModelSerializer):
         #else:
         #    profile = Profile.objects.get(user=obj.user1)
         #    return profile.nickName
-
+        print('blah')
+        return "Loading"
         """ Basically the band aid right now is that it will query firebase instead. """
 
     class Meta:
