@@ -336,10 +336,10 @@ def likeUser(request):
                 users.sort()
                 # Need to stuff proper serialization and object cration. This is quite difficult.
                 match_object = MatchSerializer({"user1":users[0], "user2":users[1], "active":True})
-                MatchSerializer.create(match_object, validated_data={"active": True, 
-                                                                    "user1": User.objects.get(uid=users[0]), 
-                                                                    "user2": User.objects.get(uid=users[1])})
-
+                #MatchSerializer.create(match_object, validated_data={"active": True, 
+                #                                                    "user1": User.objects.get(uid=users[0]), 
+                #                                                    "user2": User.objects.get(uid=users[1])})
+                MatchSerializer.create(match_object, validated_data={"active": True, "user1": users[0], "user2": users[1]})
             interaction = UserInteraction.objects.create(
                 target=target_user,
                 actor=actor_user,
