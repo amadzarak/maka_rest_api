@@ -28,11 +28,10 @@ class FirebaseClient:
         doc = doc_ref.get()
 
         if doc.exists:
-            print(f"Document data: {doc.to_dict()['name']}")
-            return doc.to_dict()
+            return doc.to_dict()['name']
         else:
             print("No such document!")
-        return {}
+        return ''
         
     def all(self):
         """Get all users from firestore database"""

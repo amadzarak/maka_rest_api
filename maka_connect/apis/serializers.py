@@ -27,17 +27,22 @@ class GuestContactSerializer(serializers.ModelSerializer):
 class UserInteractionSerializer(serializers.ModelSerializer):
     target_name = serializers.SerializerMethodField()
     actor_name = serializers.SerializerMethodField()
+    client = FirebaseClient()
 
     def get_target_name(self, obj):
         print(obj)
-        profile = Profile.objects.get(user=obj.target)
-        return profile.nickName
+        #profile = Profile.objects.get(user=obj.target)
+        #return profile.nickName
+        name = self.client.get_by_id(obj.target)
+        return name
 
     def get_actor_name(self, obj):
         print(obj)
-        profile = Profile.objects.get(user=obj.actor)
-        return profile.nickName
-
+        #profile = Profile.objects.get(user=obj.actor)
+        #return profile.nickName
+        name = self.client.get_by_id(obj.actor)
+        return name
+    
     class Meta:
         model = UserInteraction
         fields = '__all__'
@@ -65,9 +70,14 @@ class MatchSerializer(serializers.ModelSerializer):
         #else:
         #    profile = Profile.objects.get(user=obj.user1)
         #    return profile.nickName
-        name = self.client.get_by_id(obj.user1)
-        return "Loading"
-        """ Basically the band aid right now is that it will query firebase instead. """
+
+        if obj.user1 == self.context['user_id']:
+            name = self.client.get_by_id(obj.user2)
+            return name
+        else:
+            name = self.client.get_by_id(obj.user1)
+            return name
+
 
     class Meta:
         model = Matches
