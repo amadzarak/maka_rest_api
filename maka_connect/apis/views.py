@@ -396,7 +396,7 @@ def send_user_alerts(request):
     tokens=fcm,
 )
 
-    messaging.send_multicast(message)
+    response = messaging.send_multicast(message)
     # See the BatchResponse reference documentation
     # for the contents of response.
     print('{0} messages were sent successfully'.format(response.success_count))
