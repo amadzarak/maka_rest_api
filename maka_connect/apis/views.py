@@ -389,8 +389,8 @@ def send_user_alerts(request):
     print(fcm)
     message = messaging.MulticastMessage(
         notification = messaging.Notification(
-   title="Maka Social",
-   body='hi'
+   title="The Event is Now Over",
+   body='Please check the app to see if you got any likes and matches'
   ),
 
     tokens=fcm,
