@@ -389,11 +389,12 @@ def test_send(request):
     tmp = []
     likeAlert = []
     for e in eventActivity:
-        tmp.append((e.actor, e.target))
+        print(e)
+        #tmp.append((e.actor, e.target))
 
-        if e.target not in likeAlert:
-            likeAlert.append(e.target)
-            members.remove(e.target)
+        #if e.target not in likeAlert:
+        #    likeAlert.append(e.target)
+        #    members.remove(e.target)
         
     lP = 0
     matchAlert = []
