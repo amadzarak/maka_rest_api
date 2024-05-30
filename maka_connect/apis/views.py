@@ -383,15 +383,14 @@ def test_send(request):
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
 
-    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'])
+    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
     print('event interactions', eventActivity)
 
-    event_activity_serialized = UserInteractionSerializer(data=eventActivity)
-    print(event_activity_serialized)
-    
+    tmp = []
     for e in eventActivity:
-        print(e.actor)
+        tmp.append((e.actor, e.target))
 
+    print(tmp)
     return Response({"message": "check terminal"})
 
 
