@@ -382,7 +382,7 @@ def test_send(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
-    print(members)
+
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
     print('event interactions', eventActivity)
 
@@ -390,11 +390,11 @@ def test_send(request):
     likeAlert = []
     for e in eventActivity:
         print(e.actor)
-        #tmp.append((e.actor, e.target))
+        tmp.append((e.actor, e.target))
 
-        #if e.target not in likeAlert:
-        #    likeAlert.append(e.target)
-        #    members.remove(e.target)
+        if e.target not in likeAlert:
+            likeAlert.append(e.target)
+            members.remove(e.target)
         
     lP = 0
     matchAlert = []
