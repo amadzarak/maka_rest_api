@@ -169,7 +169,8 @@ class UserInteraction(models.Model):
     actor = models.TextField()
     interaction_type = models.TextField()
     interaction_time = models.DateTimeField(auto_now_add=True)
-    event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
+    #event = models.ForeignKey(Event, null=True, on_delete=models.DO_NOTHING)
+    event = models.TextField()
     current_interaction = models.BooleanField(null=True, default=True)
     seen = models.BooleanField(null=True, default=False)
 
