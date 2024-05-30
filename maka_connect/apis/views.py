@@ -386,6 +386,8 @@ def test_send(request):
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'])
     print('event interactions', eventActivity)
 
+    event_activity_serialized = UserInteractionSerializer(data=eventActivity)
+    print(event_activity_serialized)
     for e in eventActivity:
         print(e)
 
