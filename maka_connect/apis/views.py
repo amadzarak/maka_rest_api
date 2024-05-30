@@ -387,8 +387,33 @@ def test_send(request):
     print('event interactions', eventActivity)
 
     tmp = []
+    likeAlert = []
     for e in eventActivity:
         tmp.append((e.actor, e.target))
+
+        if e.target not in likeAlert:
+            likeAlert.append(e.target)
+            members.pop(e.target)
+        
+    lP = 0
+    matchAlert = []
+
+    while lP < len(tmp):
+        print(tmp[lP])
+        for idx in range(lP + 1, len(tmp)):
+            if tmp[idx] == (tmp[idx][1], tmp[idx][0]):
+                print(tmp[idx])
+                if tmp[idx][0] not in matchAlert:
+                    matchAlert.append(tmp[idx][0])
+                    likeAlert.pop(tmp[idx][0])
+
+                if tmp[idx][1] not in matchAlert:
+                    matchAlert.append(tmp[idx][1])
+                    likeAlert.pop(tmp[idx][1])
+            else:
+                print(tmp[idx])
+
+        lP = lP + 1
 
     print(tmp)
     return Response({"message": "check terminal"})
