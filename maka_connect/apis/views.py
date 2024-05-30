@@ -378,7 +378,7 @@ def unlikeUser(request):
         return Response({"message": "Unlike complete"})  
 
 @api_view(['POST'])
-def test_send(request):
+def send_user_alerts(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
@@ -416,12 +416,55 @@ def test_send(request):
 
         lP = lP + 1
 
-    print(tmp)
+    likesFCM = []
+    matchFCM = []
+    sorryFCM = []
+
+    for i in members:
+        sorryFCM.append(client.get_fcm_tokens(i))
+
+    for j in matchAlert:
+        matchFCM.append(client.get_fcm_tokens(j))
+
+    for k in likeAlert:
+        likesFCM.append(client.get_fcm_tokens(k))
+
+
+
+    sorry = messaging.MulticastMessage(
+        notification = messaging.Notification(
+        title="The Event is Now Over",
+        body='Please check the app to see if you got any likes and matches'
+        ),
+    tokens=sorryFCM,
+)
+
+    sorryresponse = messaging.send_multicast(sorry)
+
+    like = messaging.MulticastMessage(
+        notification = messaging.Notification(
+        title="The Event is Now Over",
+        body='Please check the app to see if you got any likes and matches'
+        ),
+    tokens=likesFCM,
+)
+
+    likeresponse = messaging.send_multicast(like)
+
+    match = messaging.MulticastMessage(
+        notification = messaging.Notification(
+        title="The Event is Now Over",
+        body='Please check the app to see if you got any likes and matches'
+        ),
+    tokens=matchAlert,
+)
+
+    matchresponse = messaging.send_multicast(match)
     return Response({"message": "check terminal"})
 
 
 @api_view(['POST'])
-def send_user_alerts(request):
+def test_send(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
