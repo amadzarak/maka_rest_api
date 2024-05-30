@@ -382,7 +382,7 @@ def test_send(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
-
+    print(members)
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
     print('event interactions', eventActivity)
 
