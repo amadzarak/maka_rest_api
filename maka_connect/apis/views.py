@@ -388,8 +388,9 @@ def test_send(request):
 
     event_activity_serialized = UserInteractionSerializer(data=eventActivity)
     print(event_activity_serialized)
+    
     for e in eventActivity:
-        print(e)
+        print(e.actor)
 
     return Response({"message": "check terminal"})
 
