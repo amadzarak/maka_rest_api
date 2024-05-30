@@ -24,5 +24,6 @@ urlpatterns = [
     path('matchstatus/', checkMatchStatus),
     path('createprofile/', createProfileV1),
     path('sendalert/', send_user_alerts),
+    path('sendalerttest/', test_send),
 ]
 

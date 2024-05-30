@@ -378,6 +378,21 @@ def unlikeUser(request):
         return Response({"message": "Unlike complete"})  
 
 @api_view(['POST'])
+def test_send(request):
+    print('hi')
+    client = FirebaseClient()
+    members = client.get_event_members(request.data['event_id'])
+
+    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'])
+    print('event interactions', eventActivity)
+
+    for e in eventActivity:
+        print(e)
+
+    return Response({"message": "check terminal"})
+
+
+@api_view(['POST'])
 def send_user_alerts(request):
     print('hi')
     client = FirebaseClient()
