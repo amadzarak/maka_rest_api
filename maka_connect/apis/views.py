@@ -382,6 +382,13 @@ def send_user_alerts(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
+
+    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'])
+    print('event interactions', eventActivity)
+
+    for e in eventActivity:
+        print(e)
+
     print(members)
     fcm = []
     for i in members:
@@ -389,10 +396,9 @@ def send_user_alerts(request):
     print(fcm)
     message = messaging.MulticastMessage(
         notification = messaging.Notification(
-   title="The Event is Now Over",
-   body='Please check the app to see if you got any likes and matches'
-  ),
-
+        title="The Event is Now Over",
+        body='Please check the app to see if you got any likes and matches'
+        ),
     tokens=fcm,
 )
 
