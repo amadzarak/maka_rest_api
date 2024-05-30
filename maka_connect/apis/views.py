@@ -393,7 +393,7 @@ def test_send(request):
 
         if e.target not in likeAlert:
             likeAlert.append(e.target)
-            members.pop(e.target)
+            members.remove(e.target)
         
     lP = 0
     matchAlert = []
@@ -405,11 +405,11 @@ def test_send(request):
                 print(tmp[idx])
                 if tmp[idx][0] not in matchAlert:
                     matchAlert.append(tmp[idx][0])
-                    likeAlert.pop(tmp[idx][0])
+                    likeAlert.remove(tmp[idx][0])
 
                 if tmp[idx][1] not in matchAlert:
                     matchAlert.append(tmp[idx][1])
-                    likeAlert.pop(tmp[idx][1])
+                    likeAlert.remove(tmp[idx][1])
             else:
                 print(tmp[idx])
 
