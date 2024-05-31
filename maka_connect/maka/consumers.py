@@ -62,7 +62,7 @@ class LikesConsumer(AsyncWebsocketConsumer):
         print(req_body['user_id'])
         await self.update_seen_status(uid=req_body['user_id'])
         #await self.send(text_data=json.dumps({"message": "Server confirmed status update"}))
-        like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
+        like_count = await self.get_like_count(req_body['user_id'])
         print(like_count)
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
 
