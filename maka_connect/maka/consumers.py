@@ -42,7 +42,7 @@ class LikesConsumer(AsyncWebsocketConsumer):
         await self.accept()
         params = parse_qs(self.scope["query_string"].decode())
         user = params.get('user', (None,))[0]
-        like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
+        like_count = await self.get_like_count(user)
         print(like_count)
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
 
