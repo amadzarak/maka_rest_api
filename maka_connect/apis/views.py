@@ -433,8 +433,8 @@ def send_user_alerts(request):
 
     sorry = messaging.MulticastMessage(
         notification = messaging.Notification(
-        title="The Event is Now Over",
-        body='Please check the app to see if you got any likes and matches'
+        title="Sorry",
+        body='Sorry'
         ),
     tokens=sorryFCM,
 )
@@ -443,8 +443,8 @@ def send_user_alerts(request):
 
     like = messaging.MulticastMessage(
         notification = messaging.Notification(
-        title="The Event is Now Over",
-        body='Please check the app to see if you got any likes and matches'
+        title="You Got Like",
+        body='POoop'
         ),
     tokens=likesFCM,
 )
@@ -453,8 +453,8 @@ def send_user_alerts(request):
 
     match = messaging.MulticastMessage(
         notification = messaging.Notification(
-        title="The Event is Now Over",
-        body='Please check the app to see if you got any likes and matches'
+        title="Match",
+        body='Fart'
         ),
     tokens=matchAlert,
 )
