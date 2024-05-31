@@ -456,7 +456,7 @@ def send_user_alerts(request):
         title="Match",
         body='Fart'
         ),
-    tokens=matchAlert,
+    tokens=matchFCM,
 )
 
     matchresponse = messaging.send_multicast(match)
