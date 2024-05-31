@@ -318,10 +318,11 @@ def likeUser(request):
             #actor_user = User.objects.get(uid=request.data['actor'])
             target_user = request.data['target']
             actor_user = request.data['actor']
-            try:
-                event_object = Event.objects.get(id=request.data['event'])
-            except Event.DoesNotExist:
-                event_object = None
+            event_object = request.data['event']
+            #try:
+            #    event_object = request.data['event'] #Event.objects.get(id=request.data['event'])
+            #except Event.DoesNotExist:
+            #    event_object = None
 
             
             try:
