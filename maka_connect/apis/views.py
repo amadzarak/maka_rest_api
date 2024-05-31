@@ -402,15 +402,15 @@ def send_user_alerts(request):
     while lP < len(tmp):
         print(tmp[lP])
         for idx in range(lP + 1, len(tmp)):
-            if tmp[idx] == (tmp[idx][1], tmp[idx][0]):
+            if tmp[idx] == (tmp[lP][1], tmp[lP][0]):
                 print(tmp[idx])
-                if tmp[idx][0] not in matchAlert:
-                    matchAlert.append(tmp[idx][0])
-                    likeAlert.remove(tmp[idx][0])
+                if tmp[lP][0] not in matchAlert:
+                    matchAlert.append(tmp[lP][0])
+                    likeAlert.remove(tmp[lP][0])
 
-                if tmp[idx][1] not in matchAlert:
-                    matchAlert.append(tmp[idx][1])
-                    likeAlert.remove(tmp[idx][1])
+                if tmp[lP][1] not in matchAlert:
+                    matchAlert.append(tmp[lP][1])
+                    likeAlert.remove(tmp[lP][1])
             else:
                 print(tmp[idx])
 
