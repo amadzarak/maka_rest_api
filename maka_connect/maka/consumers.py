@@ -41,7 +41,9 @@ class LikesConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
         params = parse_qs(self.scope["query_string"].decode())
+        print(params)
         user = params.get('user', (None,))[0]
+        print(user)
         like_count = await self.get_like_count(user)
         print(like_count)
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
