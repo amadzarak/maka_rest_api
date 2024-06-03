@@ -349,7 +349,7 @@ def likeUser(request):
                         title="Match",
                         body='You got a match!'
                         ),
-                    tokens=client.get_fcm_tokens(request.data['target']))
+                    tokens=[client.get_fcm_tokens(request.data['target'])])
                     matchresponse = messaging.send_multicast(match)
 
             interaction = UserInteraction.objects.create(
@@ -367,7 +367,7 @@ def likeUser(request):
                     title="Like",
                     body='You got a like!'
                     ),
-                tokens=client.get_fcm_tokens(request.data['target']))
+                tokens=[client.get_fcm_tokens(request.data['target'])])
                 likeresponse = messaging.send_multicast(like)
             return Response(interaction_serializer.data, status=status.HTTP_200_OK)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
