@@ -173,6 +173,7 @@ class UserInteraction(models.Model):
     event = models.TextField()
     current_interaction = models.BooleanField(null=True, default=True)
     seen = models.BooleanField(null=True, default=False)
+    delay = models.BooleanField(null=True, default=False)
 
 class Matches(models.Model):
     #user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user1")
@@ -181,6 +182,7 @@ class Matches(models.Model):
     user2 = models.TextField(null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField()
+    delay = models.BooleanField(null=True, default=False)
 
 
 class EventFeedback(models.Model):

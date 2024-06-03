@@ -342,6 +342,16 @@ def likeUser(request):
                 #                                                    "user1": User.objects.get(uid=users[0]), 
                 #                                                    "user2": User.objects.get(uid=users[1])})
                 MatchSerializer.create(match_object, validated_data={"active": True, "user1": users[0], "user2": users[1]})
+                if request.data['delay'] != True:
+                    client = FirebaseClient()
+                    match = messaging.MulticastMessage(
+                        notification = messaging.Notification(
+                        title="Match",
+                        body='You got a match!'
+                        ),
+                    tokens=client.get_fcm_tokens(request.data['target']))
+                    matchresponse = messaging.send_multicast(match)
+
             interaction = UserInteraction.objects.create(
                 target=target_user,
                 actor=actor_user,
@@ -349,6 +359,16 @@ def likeUser(request):
                 interaction_type=request.data['interaction_type'],
             )
             interaction_serializer = UserInteractionSerializer(interaction)
+
+            if request.data['delay'] != True:
+                client = FirebaseClient()
+                like = messaging.MulticastMessage(
+                    notification = messaging.Notification(
+                    title="Like",
+                    body='You got a like!'
+                    ),
+                tokens=client.get_fcm_tokens(request.data['target']))
+                likeresponse = messaging.send_multicast(like)
             return Response(interaction_serializer.data, status=status.HTTP_200_OK)
         return Response(user_interaction_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -386,7 +406,7 @@ def send_user_alerts(request):
 
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
     print('event interactions', eventActivity)
-
+    eventActivity.update(delay=False)
     tmp = []
     likeAlert = []
     for e in eventActivity:
