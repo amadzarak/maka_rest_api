@@ -361,7 +361,7 @@ def likeUser(request):
             )
             interaction_serializer = UserInteractionSerializer(interaction)
 
-            if request.data['delay'] != True:
+            if request.data['delay'] != False:
                 client = FirebaseClient()
                 like = messaging.MulticastMessage(
                     notification = messaging.Notification(
