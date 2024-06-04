@@ -357,6 +357,7 @@ def likeUser(request):
                 actor=actor_user,
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
+                seen=False
             )
             interaction_serializer = UserInteractionSerializer(interaction)
 
