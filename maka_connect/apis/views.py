@@ -465,7 +465,7 @@ def send_user_alerts(request):
     like = messaging.MulticastMessage(
         notification = messaging.Notification(
         title="You Got Like",
-        body='POoop'
+        body='You got a like'
         ),
     tokens=likesFCM,
 )
@@ -475,7 +475,7 @@ def send_user_alerts(request):
     match = messaging.MulticastMessage(
         notification = messaging.Notification(
         title="Match",
-        body='Fart'
+        body='you got a match'
         ),
     tokens=matchFCM,
 )

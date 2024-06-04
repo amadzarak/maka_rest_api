@@ -50,6 +50,8 @@ class LikesConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_like_count(self, user_id):
+        print("TEST TEST TEST TEST ")
+        print(user_id)
         return UserInteraction.objects.filter(
             target=user_id, seen=False, interaction_type='UserInteractionType.like'
         ).count()
