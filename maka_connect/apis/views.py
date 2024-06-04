@@ -405,9 +405,8 @@ def send_user_alerts(request):
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
 
-    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
+    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True).update(delay=False)
     print('event interactions', eventActivity)
-    eventActivity.update(delay=False)
     tmp = []
     likeAlert = []
     for e in eventActivity:
