@@ -72,6 +72,9 @@ class LikesConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
 
     async def disconnect(self, close_code):
+        print("DISCONNECT DISCONECET")
+        req_body = json.loads(close_code)
+        print(req_body)
         like_count = await self.get_like_count("ZnhatH8rseeZDoDBKSQJcnhprbl1")
         print(like_count)
         await self.send(text_data=json.dumps({"unread_messages": like_count}))
