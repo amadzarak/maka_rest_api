@@ -64,8 +64,8 @@ class LikesConsumer(AsyncWebsocketConsumer):
         # I need to specific another recieve func
         #await self.update_seen_status(uid=req_body['user_id'])
         #await self.send(text_data=json.dumps({"message": "Server confirmed status update"}))
-        print("THIS IS THE MESSAGE FROM THE CLIENT", text_data['message'])
-        if text_data['message'] == "VIEWEDALL":
+        print("THIS IS THE MESSAGE FROM THE CLIENT", req_body['message'])
+        if req_body['message'] == "VIEWEDALL":
             await self.update_seen_status(uid=req_body['user_id'])
         like_count = await self.get_like_count(req_body['user_id'])
         print(like_count)
