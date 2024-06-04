@@ -53,7 +53,7 @@ class LikesConsumer(AsyncWebsocketConsumer):
         print("TEST TEST TEST TEST ")
         print(user_id)
         print(UserInteraction.objects.filter(
-            target=user_id, seen=False, interaction_type='UserInteractionType.like'
+            target=user_id, seen=False
         ).count())
         return 7
 
