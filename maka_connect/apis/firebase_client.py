@@ -25,7 +25,7 @@ class FirebaseClient:
         doc = doc_ref.get()
 
         if doc.exists:
-            return doc.to_dict()['name']
+            return doc.to_dict().get("name")
         else:
             print("No such document!")
         return 'no_match'
