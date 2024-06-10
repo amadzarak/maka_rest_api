@@ -341,7 +341,7 @@ def likeUser(request):
                 #MatchSerializer.create(match_object, validated_data={"active": True, 
                 #                                                    "user1": User.objects.get(uid=users[0]), 
                 #                                                    "user2": User.objects.get(uid=users[1])})
-                MatchSerializer.create(match_object, validated_data={"active": True, "user1": users[0], "user2": users[1]})
+                MatchSerializer.create(match_object, validated_data={"active": True, "user1": users[0], "user2": users[1], "delay": request.data['delay']})
                 if request.data.get('delay', None) != True:
                     client = FirebaseClient()
                     match = messaging.MulticastMessage(
@@ -357,7 +357,8 @@ def likeUser(request):
                 actor=actor_user,
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
-                seen=False
+                seen=False,
+                delay=request.data['delay']
             )
             interaction_serializer = UserInteractionSerializer(interaction)
 
