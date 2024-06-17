@@ -413,6 +413,7 @@ def send_user_alerts(request):
 
     tmp = []
     likeAlert = []
+    """
     for e in eventActivity:
         print(e.actor)
         tmp.append((e.actor, e.target))
@@ -420,6 +421,8 @@ def send_user_alerts(request):
         if e.target not in likeAlert:
             likeAlert.append(e.target)
             members.remove(e.target)
+
+    """
     print('event interactions', eventActivity)
     lP = 0
     matchAlert = []
