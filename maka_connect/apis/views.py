@@ -362,7 +362,9 @@ def likeUser(request):
                 delay=request.data['delay']
             )
             interaction_serializer = UserInteractionSerializer(interaction)
-
+            print("DELAY")
+            print(request.data['delay'])
+            print(request.data.get('delay', None))
             if request.data.get('delay', None) != True:
                 client = FirebaseClient()
                 like = messaging.MulticastMessage(
@@ -408,7 +410,7 @@ def send_user_alerts(request):
     members = client.get_event_members(request.data['event_id'])
     print(request.data['event_id'])
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True).update(delay=False)
-    """
+
     tmp = []
     likeAlert = []
     for e in eventActivity:
@@ -483,7 +485,7 @@ def send_user_alerts(request):
 )
 
     matchresponse = messaging.send_multicast(match)
-    """
+    
     return Response({"message": "check terminal"})
 
 
