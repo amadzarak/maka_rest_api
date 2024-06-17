@@ -359,7 +359,7 @@ def likeUser(request):
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
                 seen=False,
-                delay=request.data['delay']
+                delay=True ##request.data['delay']
             )
             interaction_serializer = UserInteractionSerializer(interaction)
 
