@@ -305,7 +305,7 @@ def getUsersLikeRecieved(request, uid):
 
 @api_view(['POST'])
 def likeUser(request):
-
+    print(request)
     if (request.data['target'] == request.data['actor']):
         print('Entry not recorded. A UserInteraction object cannot be created for a single user')
         return Response({"message": "A UserInteraction object cannot be created for a single user"})    
@@ -342,6 +342,7 @@ def likeUser(request):
                 #                                                    "user1": User.objects.get(uid=users[0]), 
                 #                                                    "user2": User.objects.get(uid=users[1])})
                 MatchSerializer.create(match_object, validated_data={"active": True, "user1": users[0], "user2": users[1], "delay": request.data['delay']})
+                # Delayed notification did not work
                 if request.data.get('delay', None) != True:
                     client = FirebaseClient()
                     match = messaging.MulticastMessage(
@@ -392,7 +393,7 @@ def unlikeUser(request):
         users = [request.data['actor'], request.data['target']]
         users.sort()
         try:
-            current_match_object = Matches.objects.filter(user1=users[0], user2=users[1], active=True).update(active=False)
+            current_match_object = Matches.objects.filter(user1=users[0], user2=users[1]).update(active=False)
         except Matches.DoesNotExist:
             print('A match does not exist. Continuing')
         else:
