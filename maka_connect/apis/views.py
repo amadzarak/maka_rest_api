@@ -485,7 +485,8 @@ def send_user_alerts(request):
 )
 
     matchresponse = messaging.send_multicast(match)
-    
+    print(members)
+    print(eventActivity)
     return Response({"message": "check terminal"})
 
 
