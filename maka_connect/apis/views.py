@@ -409,11 +409,11 @@ def send_user_alerts(request):
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
     print(request.data['event_id'])
-    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True).update(delay=False)
-
+    eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True)
+    eventActivity.update(delay=False)
     tmp = []
     likeAlert = []
-    """
+    
     for e in eventActivity:
         print(e.actor)
         tmp.append((e.actor, e.target))
@@ -422,7 +422,7 @@ def send_user_alerts(request):
             likeAlert.append(e.target)
             members.remove(e.target)
 
-    """
+    
     print('event interactions', eventActivity)
     lP = 0
     matchAlert = []
