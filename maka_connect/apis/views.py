@@ -406,7 +406,7 @@ def send_user_alerts(request):
     print('hi')
     client = FirebaseClient()
     members = client.get_event_members(request.data['event_id'])
-
+    print(request.data['event_id'])
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True).update(delay=False)
     """
     tmp = []
