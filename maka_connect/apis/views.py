@@ -359,7 +359,7 @@ def likeUser(request):
                 event=event_object,
                 interaction_type=request.data['interaction_type'],
                 seen=False,
-                delay=True ##request.data['delay']
+                delay=request.data['delay']
             )
             interaction_serializer = UserInteractionSerializer(interaction)
 
@@ -408,7 +408,7 @@ def send_user_alerts(request):
     members = client.get_event_members(request.data['event_id'])
 
     eventActivity = UserInteraction.objects.all().filter(event=request.data['event_id'], current_interaction=True).update(delay=False)
-    print('event interactions', eventActivity)
+    
     tmp = []
     likeAlert = []
     for e in eventActivity:
@@ -418,7 +418,7 @@ def send_user_alerts(request):
         if e.target not in likeAlert:
             likeAlert.append(e.target)
             members.remove(e.target)
-        
+    print('event interactions', eventActivity)
     lP = 0
     matchAlert = []
 
