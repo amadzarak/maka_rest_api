@@ -305,7 +305,7 @@ def getUsersLikeRecieved(request, uid):
 
 @api_view(['POST'])
 def likeUser(request):
-    print(request)
+    print(request.data)
     if (request.data['target'] == request.data['actor']):
         print('Entry not recorded. A UserInteraction object cannot be created for a single user')
         return Response({"message": "A UserInteraction object cannot be created for a single user"})    
